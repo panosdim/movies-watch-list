@@ -1,0 +1,23 @@
+@import '~@taiga-ui/core/styles/taiga-ui-local';
+
+.login-section {
+  height: 100vh;
+  background: var(--tui-neutral-bg);
+  color: var(--tui-text-01);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.releases-section {
+  height: 100vh;
+  background: var(--tui-success-fill);
+  color: var(--tui-text-01);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media @tui-mobile {
+    display: none;
+  }
+}

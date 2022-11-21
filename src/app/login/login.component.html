@@ -1,0 +1,49 @@
+<div class="tui-container tui-container_fullwidth">
+  <div class="tui-row tui-row_adaptive">
+    <div class="tui-col_md-7 tui-col_lg-9 releases-section">
+      <p>New Releases</p>
+    </div>
+    <div class="tui-col_xs-12 tui-col_md-5 tui-col_lg-3 login-section">
+      <div class="tui-container">
+        <form [formGroup]="loginForm" (submit)="login()">
+          <div class="tui-col">
+            <h3 class="tui-form__header tui-form__header_margin-top_none">
+              Movies Watch List
+            </h3>
+            <div class="tui-form__row">
+              <tui-input formControlName="email">
+                Email
+                <span class="tui-required"></span>
+              </tui-input>
+              <tui-error
+                formControlName="email"
+                [error]="[] | tuiFieldError | async"
+              ></tui-error>
+            </div>
+            <div class="tui-form__row">
+              <tui-input-password formControlName="password">
+                Password
+                <span class="tui-required"></span>
+              </tui-input-password>
+              <tui-error
+                formControlName="password"
+                [error]="[] | tuiFieldError | async"
+              ></tui-error>
+            </div>
+            <div class="tui-form__buttons">
+              <button
+                tuiButton
+                size="l"
+                icon="tuiIconLoginLarge"
+                type="submit"
+                class="tui-form__button"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
