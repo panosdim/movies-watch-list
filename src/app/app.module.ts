@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { isDevMode, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,12 +20,15 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { AuthInterceptor } from './services/auth-inteceptor.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
@@ -42,7 +46,7 @@ import { LoginComponent } from './login/login.component';
     TuiInputPasswordModule,
     TuiButtonModule,
   ],
-  providers: [],
+  providers: [AuthenticationService, AuthInterceptor],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
