@@ -11,11 +11,12 @@
 
 .releases-section {
   height: 100vh;
-  background: var(--tui-success-fill);
   color: var(--tui-text-01);
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  overflow: hidden;
 
   @media @tui-mobile {
     display: none;
@@ -25,4 +26,23 @@
 .logo {
   display:flex;
   justify-content: center;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.image-gallery>li {
+  position: relative;
+}
+
+.image-gallery li img {
+  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border-radius: 5px;
 }
