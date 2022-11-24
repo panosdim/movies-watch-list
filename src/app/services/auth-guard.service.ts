@@ -27,16 +27,18 @@ export class AuthGuardService implements CanActivate {
         if (decoded.hasOwnProperty('exp') && decoded.exp * 1000 > Date.now()) {
           return true;
         }
+        this.authService.logout();
+        this.router.navigateByUrl('/login');
         return false;
       } catch {
         this.authService.logout();
-        this.router.navigate(['login']);
+        this.router.navigateByUrl('/login');
         return false;
       }
     }
 
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.router.navigateByUrl('/login');
     return false;
   }
 }

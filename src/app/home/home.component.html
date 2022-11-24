@@ -1,1 +1,21 @@
-<p>home works!</p>
+<tui-island textAlign="center" class="header">
+  <div class="tui-island__content header-contents">
+    <div class="logo-title">
+      <img src="assets/icons/icon-72x72.png" />
+      <p class="tui-text_h4">Movies Watch List</p>
+    </div>
+    <tui-input formControlName="testValue">
+      Type an email
+      <input tuiTextfield type="email" />
+    </tui-input>
+    <button
+      tuiButton
+      size="l"
+      appearance="secondary-destructive"
+      icon="tuiIconLogoutLarge"
+      (click)="logout()"
+    >
+      Logout
+    </button>
+  </div>
+</tui-island>
