@@ -29,9 +29,10 @@ import { LoginComponent } from './login/login.component';
 import { AuthInterceptorProvider } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
 import { SearchComponent } from './search/search.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, SearchComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, SearchComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -60,5 +61,8 @@ import { SearchComponent } from './search/search.component';
   ],
   providers: [AuthenticationService, AuthInterceptorProvider],
   bootstrap: [AppComponent],
+  exports: [
+    HeaderComponent
+  ],
 })
 export class AppModule {}

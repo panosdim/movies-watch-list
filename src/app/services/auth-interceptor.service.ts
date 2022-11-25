@@ -8,7 +8,9 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthInterceptor implements HttpInterceptor {
   intercept(
     req: HttpRequest<any>,

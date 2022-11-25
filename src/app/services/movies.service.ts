@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 export class MoviesService {
   constructor(private http: HttpClient) {}
 
+  searchTerm: string | undefined;
+
   autocompleteMovies(term: string) {
     return this.http.post<Array<string[]>>(environment.autocompleteUrl(), {
       term: term,
