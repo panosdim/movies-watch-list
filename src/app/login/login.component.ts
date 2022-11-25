@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     email: new FormControl(``, [Validators.required, Validators.email]),
     password: new FormControl(``, Validators.required),
   });
-  popularMovies!: Observable<MovieType[]>;
+  popularMovies$!: Observable<MovieType[]>;
   imageBaseUrl = environment.imageBaseUrl + 'w185';
 
   constructor(
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.popularMovies = this.popularService
+    this.popularMovies$ = this.popularService
       .getPopularMovies()
       .pipe(map((resp: PopularMoviesType) => <MovieType[]>resp.results));
   }

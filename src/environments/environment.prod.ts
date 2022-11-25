@@ -6,5 +6,11 @@ export const environment = {
   popularUrl: function () {
     return this.apiUrl + '/popular';
   },
+  searchUrl: function () {
+    return this.apiUrl + '/search';
+  },
+  autocompleteUrl: function () {
+    return this.apiUrl + '/autocomplete';
+  },
   imageBaseUrl: 'https://image.tmdb.org/t/p/',
 };

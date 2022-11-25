@@ -1,3 +1,5 @@
+@import "~@taiga-ui/core/styles/taiga-ui-local";
+
 .header {
   margin: 24px;
 }
@@ -6,14 +8,47 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media @tui-mobile {
+    display: block;
+  }
 }
 
-.logo-title{
+.logo-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-width: fit-content;
 }
 
-.logo-title>:first-child {
+.logo-title > * {
   margin-right: 24px;
+}
+
+.logo-title {
+  @media @tui-mobile {
+    display: none;
+  }
+}
+
+.search {
+  width: 100%;
+  margin-right: 24px;
+  max-width: 650px;
+  @media @tui-mobile {
+    margin-bottom: 24px;
+  }
+}
+
+.avatar {
+  margin: 0 @space * 2 0 0;
+  flex-shrink: 0;
+}
+
+.movie-name-release-date {
+  .text-overflow();
+  flex-shrink: 1;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
 }
