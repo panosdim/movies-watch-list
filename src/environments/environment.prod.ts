@@ -12,5 +12,8 @@ export const environment = {
   autocompleteUrl: function () {
     return this.apiUrl + '/autocomplete';
   },
+  moviesUrl: function () {
+    return this.apiUrl + '/movies';
+  },
   imageBaseUrl: 'https://image.tmdb.org/t/p/',
 };

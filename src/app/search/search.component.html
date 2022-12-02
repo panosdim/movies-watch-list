@@ -1,1 +1,39 @@
 <app-header> </app-header>
+<div class="search-header">
+  <p>Search Results</p>
+  <button tuiButton appearance="outline" (click)="backToMovies()">
+    Back to movies
+  </button>
+</div>
+
+<div class="search-results">
+  <tui-island
+    *ngFor="let movie of searchResults$ | async; else: loading; empty: blank"
+  >
+    <div class="tui-island__content movie-contents">
+      <img
+        class="tui-space_right-4"
+        src="{{ imageBaseUrl }}{{ movie.poster_path }}"
+        alt="{{ movie.title }}"
+      />
+      <div class="tui-space_right-4">
+        <div class="tui-text_h4">{{ movie.title }}</div>
+        <div class="tui-text_h5">{{ movie.release_date }}</div>
+        <p class="tui-text_body-m">{{ movie.overview }}</p>
+      </div>
+      <button
+        tuiButton
+        [disabled]="isMovieAlreadyInWatchList(movie.id)"
+        (click)="addMovieToWatchList(movie)"
+      >
+        Add to watch list
+      </button>
+    </div>
+  </tui-island>
+  <ng-template #loading>
+    <tui-loader size="xxl"></tui-loader>
+  </ng-template>
+  <ng-template #blank>
+    <p *ngIf="inSearch" class="tui-text_h1 center">Nothing found</p>
+  </ng-template>
+</div>

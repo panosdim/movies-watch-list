@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
 import { switchMap } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
-import { MoviesService } from '../services/movies.service';
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +13,14 @@ import { MoviesService } from '../services/movies.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  readonly search = new FormControl(this.moviesService.searchTerm);
+  readonly search = new FormControl(this.searchService.searchTerm.getValue());
+  showDropdown: boolean = true;
 
   readonly movies$ = this.search.valueChanges.pipe(
     switchMap((value) => {
       if (value && value.length > 2) {
-        return this.moviesService.autocompleteMovies(value);
+        this.showDropdown = true;
+        return this.searchService.autocompleteMovies(value);
       }
 
       return [];
@@ -28,13 +30,10 @@ export class HeaderComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private moviesService: MoviesService,
+    private searchService: SearchService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
   ) {}
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   logout() {
     this.authService.logout();
@@ -48,13 +47,15 @@ export class HeaderComponent {
   }
 
   onSelected(movie: string): void {
-    this.moviesService.searchTerm = movie;
+    this.showDropdown = false;
+    this.searchService.setSearchTerm(movie);
     this.router.navigateByUrl('/search');
   }
 
   onKeypressEvent(event: any) {
     if (event.which === 13 || event.keyCode === 13) {
-      this.moviesService.searchTerm = event.target.value;
+      this.showDropdown = false;
+      this.searchService.setSearchTerm(event.target.value);
       this.router.navigateByUrl('/search');
     }
   }

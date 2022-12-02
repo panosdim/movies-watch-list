@@ -1,11 +1,13 @@
-<tui-island textAlign="center" class="header">
+<tui-island
+  textAlign="center"
+  class="tui-space_vertical-6 tui-space_horizontal-6"
+>
   <div class="tui-island__content header-contents">
-    <div class="logo-title">
+    <div>
       <img src="assets/icons/icon-72x72.png" />
       <p class="tui-text_h4">Movies Watch List</p>
     </div>
     <tui-input
-      class="search"
       *tuiLet="movies$ | async as movies"
       tuiTextfieldIcon="tuiIconSearchLarge"
       [formControl]="search"
@@ -16,7 +18,7 @@
         tuiTextfield
         placeholder="Search for a movie you want to add"
       />
-      <ng-container *ngIf="movies?.length">
+      <ng-container *ngIf="movies?.length && showDropdown">
         <tui-data-list *tuiDataList>
           <button
             *ngFor="let movie of movies"

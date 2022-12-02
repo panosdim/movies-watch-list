@@ -1,42 +1,47 @@
 @import "~@taiga-ui/core/styles/taiga-ui-local";
 
-.header {
-  margin: 24px;
-}
-
 .header-contents {
   display: flex;
   align-items: center;
+  flex-direction: row;
   justify-content: space-between;
 
   @media @tui-mobile {
-    display: block;
+    flex-direction: column;
+    align-items: stretch;
   }
-}
 
-.logo-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: fit-content;
-}
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: fit-content;
 
-.logo-title > * {
-  margin-right: 24px;
-}
+    * {
+      .tui-space(right, 6);
+    }
 
-.logo-title {
-  @media @tui-mobile {
-    display: none;
+    @media @tui-tablet {
+      p {
+        font: var(--tui-font-heading-6);
+      }
+    }
+
+    @media @tui-mobile {
+      justify-content: center;
+      p {
+        display: none;
+      }
+    }
   }
-}
 
-.search {
-  width: 100%;
-  margin-right: 24px;
-  max-width: 650px;
-  @media @tui-mobile {
-    margin-bottom: 24px;
+  tui-input {
+    width: 100%;
+    .tui-space(right, 6);
+    max-width: 650px;
+    @media @tui-mobile {
+      .tui-space(bottom, 6);
+    }
   }
 }
 

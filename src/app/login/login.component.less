@@ -1,4 +1,4 @@
-@import '~@taiga-ui/core/styles/taiga-ui-local';
+@import "~@taiga-ui/core/styles/taiga-ui-local";
 
 .login-section {
   height: 100vh;
@@ -21,28 +21,32 @@
   @media @tui-mobile {
     display: none;
   }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+
+    li {
+      position: relative;
+
+      img {
+        object-fit: cover;
+        max-width: 100%;
+        height: auto;
+        vertical-align: middle;
+        border-radius: 5px;
+      }
+    }
+  }
+
+  tui-loader {
+    overflow: visible !important;
+  }
 }
 
 .logo {
-  display:flex;
-  justify-content: center;
-}
-
-.image-gallery {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.image-gallery>li {
-  position: relative;
-}
-
-.image-gallery li img {
-  object-fit: cover;
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
-  border-radius: 5px;
+  justify-content: center;
 }

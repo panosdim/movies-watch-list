@@ -8,13 +8,15 @@ import {
   TuiDataListModule,
   TuiDialogModule,
   TuiErrorModule,
+  TuiLoaderModule,
   TuiRootModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiForModule, TuiLetModule } from '@taiga-ui/cdk';
 import {
   TuiAvatarModule,
   TuiFieldErrorPipeModule,
@@ -24,15 +26,21 @@ import {
 } from '@taiga-ui/kit';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { SearchComponent } from './search/search.component';
 import { AuthInterceptorProvider } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
-import { SearchComponent } from './search/search.component';
-import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, SearchComponent, HeaderComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    HomeComponent,
+    SearchComponent,
+    HeaderComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -58,11 +66,12 @@ import { HeaderComponent } from './header/header.component';
     TuiDataListModule,
     TuiAvatarModule,
     TuiLetModule,
+    CommonModule,
+    TuiForModule,
+    TuiLoaderModule,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider],
   bootstrap: [AppComponent],
-  exports: [
-    HeaderComponent
-  ],
+  exports: [HeaderComponent],
 })
 export class AppModule {}
