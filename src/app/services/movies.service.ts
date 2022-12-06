@@ -20,8 +20,8 @@ export class MoviesService {
     return this.http.get<WatchListMovie[]>(environment.moviesUrl()).pipe(
       catchError((_err) => {
         this.alertService
-          .open(`Error occurred while searching for movies`, {
-            label: `Error in searching`,
+          .open(`Error occurred while retrieving movies watch list`, {
+            label: `Error in movies watch list`,
             status: TuiNotification.Error,
           })
           .subscribe();
@@ -49,5 +49,35 @@ export class MoviesService {
           return of();
         })
       );
+  }
+
+  removeFromWatchList(movie: WatchListMovie): Observable<void> {
+    return this.http
+      .delete<void>(environment.moviesUrl() + `/${movie.id}`)
+      .pipe(
+        catchError((_err) => {
+          this.alertService
+            .open(`Error occurred while removing movie from watch list`, {
+              label: `Error in removing`,
+              status: TuiNotification.Error,
+            })
+            .subscribe();
+          return of();
+        })
+      );
+  }
+
+  updateReleaseDates(): Observable<void> {
+    return this.http.get<void>(environment.updateReleaseDatesUrl()).pipe(
+      catchError((_err) => {
+        this.alertService
+          .open(`Error occurred while updating release dates`, {
+            label: `Error in update release dates`,
+            status: TuiNotification.Error,
+          })
+          .subscribe();
+        return of();
+      })
+    );
   }
 }

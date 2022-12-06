@@ -16,5 +16,8 @@ export const environment = {
   moviesUrl: function () {
     return this.apiUrl + '/movies';
   },
+  updateReleaseDatesUrl: function () {
+    return this.apiUrl + '/update';
+  },
   imageBaseUrl: 'https://image.tmdb.org/t/p/',
 };

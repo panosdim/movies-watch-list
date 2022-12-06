@@ -23,6 +23,7 @@ import {
   TuiInputModule,
   TuiInputPasswordModule,
   TuiIslandModule,
+  TuiTagModule,
 } from '@taiga-ui/kit';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -69,6 +70,7 @@ import { AuthenticationService } from './services/authentication.service';
     CommonModule,
     TuiForModule,
     TuiLoaderModule,
+    TuiTagModule,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider],
   bootstrap: [AppComponent],
