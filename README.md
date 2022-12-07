@@ -1,27 +1,22 @@
-# MoviesWatchList
+# Movies Watch List
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+Keep a watch list of your movies and get release date of DVD. It uses a [REST API](https://github.com/panosdim/movies-api) as backend.
 
-## Development server
+## Screenshots
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![Login](https://user-images.githubusercontent.com/10371312/206187404-9f06f7da-c20a-459c-ab3b-8c64f56f453a.png)
+![Main-Released](https://user-images.githubusercontent.com/10371312/206187430-a1c940fe-1ded-4515-8c7b-2e192c28709e.png)
+![Main-Coming-Soon](https://user-images.githubusercontent.com/10371312/206187443-afe79a32-b1d0-45ce-ad32-4b5f2f2d16de.png)
+![Search-Results](https://user-images.githubusercontent.com/10371312/206187454-707c4e71-4d58-4221-aab1-c0fe9b65aec6.png)
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+In order to build the project you need [VS Code](https://code.visualstudio.com/).
+Clone the repository and open the folder with VS Code.
+Then you can run the project with `npm start` or build with `npm build`.
 
-## Running unit tests
+## Libraries Used
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- [Angular](https://angular.io/) used for the front end.
+- [Taiga UI](https://taiga-ui.dev/) used for the front end UI.
+- [TMDb API](https://www.themoviedb.org/documentation/api) used for search, images and info of the movies.
