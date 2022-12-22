@@ -8,8 +8,10 @@
     <tui-island *ngFor="let movie of released$ | async; else: loading">
       <div class="movie-card">
         <img
-          src="{{ imageBaseUrl }}{{ movie.image }}"
+          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+                  {{ imageBaseUrl }}w300{{ movie.image }} 300w"
           alt="{{ movie.title }}"
+          sizes="(max-width: 47.9625em) 185px, 300px"
         />
         <div>
           <p class="tui-text_h6">{{ movie.title }}</p>
@@ -42,8 +44,10 @@
     <tui-island *ngFor="let movie of coming$ | async; else: loading">
       <div class="movie-card">
         <img
-          src="{{ imageBaseUrl }}{{ movie.image }}"
+          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+                  {{ imageBaseUrl }}w300{{ movie.image }} 300w"
           alt="{{ movie.title }}"
+          sizes="(max-width: 47.9625em) 185px, 300px"
         />
         <p class="tui-text_h6">{{ movie.title }}</p>
         <tui-tag
@@ -76,8 +80,10 @@
     <tui-island *ngFor="let movie of unknown$ | async; else: loading">
       <div class="movie-card">
         <img
-          src="{{ imageBaseUrl }}{{ movie.image }}"
+          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+                  {{ imageBaseUrl }}w300{{ movie.image }} 300w"
           alt="{{ movie.title }}"
+          sizes="(max-width: 47.9625em) 185px, 300px"
         />
         <p class="tui-text_h6">{{ movie.title }}</p>
         <button

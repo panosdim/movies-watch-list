@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   deleteDialog!: Subscription;
 
-  imageBaseUrl = environment.imageBaseUrl + 'w300';
+  imageBaseUrl = environment.imageBaseUrl;
 
   now: string = new Date().toISOString().slice(0, 10);
 
