@@ -54,11 +54,15 @@ export class HomeComponent implements OnInit {
       );
 
       this.released$ = of(
-        temp.filter((movie: WatchListMovie) => movie.release_date <= this.now)
+        temp
+          .filter((movie: WatchListMovie) => movie.release_date <= this.now)
+          .sort((a, b) => a.release_date.localeCompare(b.release_date))
       );
 
       this.coming$ = of(
-        temp.filter((movie: WatchListMovie) => movie.release_date > this.now)
+        temp
+          .filter((movie: WatchListMovie) => movie.release_date > this.now)
+          .sort((a, b) => a.release_date.localeCompare(b.release_date))
       );
 
       this.unknown$ = of(
