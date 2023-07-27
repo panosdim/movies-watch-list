@@ -1,3 +1,4 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   TuiAlertService,
@@ -6,7 +7,7 @@ import {
   TuiNotification,
 } from '@taiga-ui/core';
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
@@ -29,6 +30,7 @@ export class HomeComponent implements OnInit {
   movie: WatchListMovie | undefined;
 
   constructor(
+    private clipboard: Clipboard,
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService,
@@ -69,6 +71,10 @@ export class HomeComponent implements OnInit {
         res.filter((movie: WatchListMovie) => movie.release_date === null)
       );
     });
+  }
+
+  copyMovieTitle(movieTitle: string | null) {
+    movieTitle && this.clipboard.copy(movieTitle);
   }
 
   showDeleteDialog(

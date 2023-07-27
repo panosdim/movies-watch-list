@@ -7,14 +7,25 @@
   <div class="section">
     <tui-island *ngFor="let movie of released$ | async; else: loading">
       <div class="movie-card">
-        <img
-          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+        <a
+          href="https://www.themoviedb.org/movie/{{ movie.movie_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
                   {{ imageBaseUrl }}w300{{ movie.image }} 300w"
-          alt="{{ movie.title }}"
-          sizes="(max-width: 47.9625em) 185px, 300px"
-        />
+            alt="{{ movie.title }}"
+            sizes="(max-width: 47.9625em) 185px, 300px"
+          />
+        </a>
         <div>
-          <p class="tui-text_h6">{{ movie.title }}</p>
+          <p class="tui-text_h6">
+            {{ movie.title }}&nbsp;<tui-svg
+              src="tuiIconCopyLarge"
+              (click)="copyMovieTitle(movie.title)"
+            ></tui-svg>
+          </p>
           <tui-tag
             size="l"
             class="tui-space_bottom-4"
@@ -43,13 +54,24 @@
   <div class="section">
     <tui-island *ngFor="let movie of coming$ | async; else: loading">
       <div class="movie-card">
-        <img
-          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+        <a
+          href="https://www.themoviedb.org/movie/{{ movie.movie_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
                   {{ imageBaseUrl }}w300{{ movie.image }} 300w"
-          alt="{{ movie.title }}"
-          sizes="(max-width: 47.9625em) 185px, 300px"
-        />
-        <p class="tui-text_h6">{{ movie.title }}</p>
+            alt="{{ movie.title }}"
+            sizes="(max-width: 47.9625em) 185px, 300px"
+          />
+        </a>
+        <p class="tui-text_h6">
+          {{ movie.title }}&nbsp;<tui-svg
+            src="tuiIconCopyLarge"
+            (click)="copyMovieTitle(movie.title)"
+          ></tui-svg>
+        </p>
         <tui-tag
           size="l"
           class="tui-space_bottom-4"
@@ -79,13 +101,24 @@
   <div class="section">
     <tui-island *ngFor="let movie of unknown$ | async; else: loading">
       <div class="movie-card">
-        <img
-          srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
+        <a
+          href="https://www.themoviedb.org/movie/{{ movie.movie_id }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
                   {{ imageBaseUrl }}w300{{ movie.image }} 300w"
-          alt="{{ movie.title }}"
-          sizes="(max-width: 47.9625em) 185px, 300px"
-        />
-        <p class="tui-text_h6">{{ movie.title }}</p>
+            alt="{{ movie.title }}"
+            sizes="(max-width: 47.9625em) 185px, 300px"
+          />
+        </a>
+        <p class="tui-text_h6">
+          {{ movie.title }}&nbsp;<tui-svg
+            src="tuiIconCopyLarge"
+            (click)="copyMovieTitle(movie.title)"
+          ></tui-svg>
+        </p>
         <button
           tuiButton
           type="button"

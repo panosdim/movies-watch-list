@@ -10,6 +10,7 @@ import {
   TuiErrorModule,
   TuiLoaderModule,
   TuiRootModule,
+  TuiSvgModule,
   TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 
@@ -71,6 +72,7 @@ import { AuthenticationService } from './services/authentication.service';
     TuiForModule,
     TuiLoaderModule,
     TuiTagModule,
+    TuiSvgModule,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider],
   bootstrap: [AppComponent],
