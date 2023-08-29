@@ -7,7 +7,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType, PopularMoviesType } from '../models/movie';
 import { User } from '../models/user';
@@ -38,7 +38,9 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.popularMovies$ = this.popularService
       .getPopularMovies()
-      .pipe(map((resp: PopularMoviesType) => <MovieType[]>resp.results));
+      .pipe(
+        map((resp: PopularMoviesType) => <MovieType[]>resp.results.slice(0, 18))
+      );
   }
 
   login() {
