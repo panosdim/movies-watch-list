@@ -12,6 +12,7 @@ import {
   TuiRootModule,
   TuiSvgModule,
   TuiTextfieldControllerModule,
+  TuiThemeNightModule,
 } from '@taiga-ui/core';
 
 import { CommonModule } from '@angular/common';
@@ -73,6 +74,7 @@ import { AuthenticationService } from './services/authentication.service';
     TuiLoaderModule,
     TuiTagModule,
     TuiSvgModule,
+    TuiThemeNightModule,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider],
   bootstrap: [AppComponent],

@@ -1,3 +1,4 @@
-<tui-root>
+<tui-root *tuiLet="night$ | async as night" tuiMode="night ? 'onDark' : null">
+  <tui-theme-night *ngIf="night"></tui-theme-night>
   <router-outlet></router-outlet>
 </tui-root>

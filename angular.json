@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "text-mask-core"
+            ],
             "outputPath": "dist/movies-watch-list",
             "index": "src/index.html",
             "main": "src/main.ts",
