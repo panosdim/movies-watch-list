@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { TuiNightThemeService } from '@taiga-ui/core';
-import { Observable } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { TUI_DARK_MODE } from '@taiga-ui/core';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +8,5 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   title = 'movies-watch-list';
-
-  constructor(
-    @Inject(TuiNightThemeService) readonly night$: Observable<boolean>
-  ) {}
+  protected readonly darkMode = inject(TUI_DARK_MODE);
 }

@@ -5,7 +5,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class AuthGuardService implements CanActivate {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const decoded: any = jwt_decode(token);
+        const decoded: any = jwtDecode(token);
         if (decoded.hasOwnProperty('exp') && decoded.exp * 1000 > Date.now()) {
           return true;
         }

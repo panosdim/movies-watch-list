@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { catchError, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
@@ -22,7 +22,7 @@ export class MoviesService {
         this.alertService
           .open(`Error occurred while retrieving movies watch list`, {
             label: `Error in movies watch list`,
-            status: TuiNotification.Error,
+            appearance: 'error',
           })
           .subscribe();
         return of();
@@ -43,7 +43,7 @@ export class MoviesService {
           this.alertService
             .open(`Error occurred while adding movie to watch list`, {
               label: `Error in adding`,
-              status: TuiNotification.Error,
+              appearance: 'error',
             })
             .subscribe();
           return of();
@@ -59,7 +59,7 @@ export class MoviesService {
           this.alertService
             .open(`Error occurred while removing movie from watch list`, {
               label: `Error in removing`,
-              status: TuiNotification.Error,
+              appearance: 'error',
             })
             .subscribe();
           return of();
@@ -73,7 +73,7 @@ export class MoviesService {
         this.alertService
           .open(`Error occurred while updating release dates`, {
             label: `Error in update release dates`,
-            status: TuiNotification.Error,
+            appearance: 'error',
           })
           .subscribe();
         return of();

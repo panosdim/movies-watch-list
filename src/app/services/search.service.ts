@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType, PopularMoviesType } from '../models/movie';
@@ -46,7 +46,7 @@ export class SearchService {
           this.alertService
             .open(`Error occurred while searching for movies`, {
               label: `Error in searching`,
-              status: TuiNotification.Error,
+              appearance: 'error',
             })
             .subscribe();
           return of();

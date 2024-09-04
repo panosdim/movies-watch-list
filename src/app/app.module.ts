@@ -1,32 +1,33 @@
 import { HttpClientModule } from '@angular/common/http';
-import { isDevMode, NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  TuiAlertModule,
-  TuiButtonModule,
-  TuiDataListModule,
-  TuiDialogModule,
-  TuiErrorModule,
-  TuiLoaderModule,
-  TuiRootModule,
-  TuiSvgModule,
-  TuiTextfieldControllerModule,
-  TuiThemeNightModule,
+  TuiAlert,
+  TuiButton,
+  TuiDataList,
+  TuiDialog,
+  TuiError,
+  TuiFallbackSrcPipe,
+  TuiIcon,
+  TuiInitialsPipe,
+  TuiLoader,
+  TuiRoot,
+  TuiSurface,
 } from '@taiga-ui/core';
+import { NG_EVENT_PLUGINS } from '@taiga-ui/event-plugins';
+import {
+  TuiInputModule,
+  TuiInputPasswordModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/legacy';
 
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { TuiForModule, TuiLetModule } from '@taiga-ui/cdk';
-import {
-  TuiAvatarModule,
-  TuiFieldErrorPipeModule,
-  TuiInputModule,
-  TuiInputPasswordModule,
-  TuiIslandModule,
-  TuiTagModule,
-} from '@taiga-ui/kit';
+import { TuiFor, TuiLet } from '@taiga-ui/cdk';
+import { TuiAvatar, TuiChip, TuiFieldErrorPipe } from '@taiga-ui/kit';
+import { TuiCardLarge } from '@taiga-ui/layout';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -56,27 +57,29 @@ import { AuthenticationService } from './services/authentication.service';
     }),
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    TuiRootModule,
-    TuiDialogModule,
-    TuiAlertModule,
+    TuiRoot,
+    TuiDialog,
+    TuiAlert,
     TuiInputModule,
-    TuiErrorModule,
-    TuiFieldErrorPipeModule,
+    TuiError,
+    TuiFieldErrorPipe,
     TuiInputPasswordModule,
-    TuiButtonModule,
-    TuiIslandModule,
+    TuiButton,
+    TuiChip,
     TuiTextfieldControllerModule,
-    TuiDataListModule,
-    TuiAvatarModule,
-    TuiLetModule,
+    ...TuiDataList,
+    TuiAvatar,
+    TuiLet,
     CommonModule,
-    TuiForModule,
-    TuiLoaderModule,
-    TuiTagModule,
-    TuiSvgModule,
-    TuiThemeNightModule,
+    TuiFor,
+    TuiLoader,
+    TuiCardLarge,
+    TuiSurface,
+    TuiIcon,
+    TuiFallbackSrcPipe,
+    TuiInitialsPipe,
   ],
-  providers: [AuthenticationService, AuthInterceptorProvider],
+  providers: [AuthenticationService, AuthInterceptorProvider, NG_EVENT_PLUGINS],
   bootstrap: [AppComponent],
   exports: [HeaderComponent],
 })

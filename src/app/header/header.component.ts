@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { switchMap } from 'rxjs';
 import { AuthenticationService } from '../services/authentication.service';
 import { SearchService } from '../services/search.service';
@@ -40,7 +40,7 @@ export class HeaderComponent {
     this.alertService
       .open(`You have successfully logged out`, {
         label: `Logout`,
-        status: TuiNotification.Info,
+        appearance: 'info',
       })
       .subscribe();
     this.router.navigateByUrl('/login');

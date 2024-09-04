@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { of } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -39,7 +39,7 @@ export class AuthenticationService {
           this.alertService
             .open(`Please check your email and password`, {
               label: `Login Failed`,
-              status: TuiNotification.Error,
+              appearance: 'error',
             })
             .subscribe();
           return of();

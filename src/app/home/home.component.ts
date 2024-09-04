@@ -3,10 +3,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {
   TuiAlertService,
   TuiDialogContext,
-  TuiDialogService,
-  TuiNotification,
+  TuiDialogService
 } from '@taiga-ui/core';
-import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
+import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
 import { Observable, Subscription, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { WatchListMovie } from '../models/watchlist';
@@ -42,7 +41,7 @@ export class HomeComponent implements OnInit {
       this.alertService
         .open(`DVD release date have been updated`, {
           label: `Release dates update`,
-          status: TuiNotification.Info,
+          appearance: 'info',
         })
         .subscribe();
       this.fetchWatchList();
@@ -93,7 +92,7 @@ export class HomeComponent implements OnInit {
         this.alertService
           .open(`Movie removed from watch list`, {
             label: movieTitle,
-            status: TuiNotification.Success,
+            appearance: 'success',
           })
           .subscribe();
         this.movie = undefined;

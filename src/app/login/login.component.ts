@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType, PopularMoviesType } from '../models/movie';
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
             this.alertService
               .open(`${user.firstName} ${user.lastName}`, {
                 label: `Welcome`,
-                status: TuiNotification.Info,
+                appearance: 'info',
               })
               .subscribe();
             this.router.navigate(['home']);

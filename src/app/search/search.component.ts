@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TuiAlertService, TuiNotification } from '@taiga-ui/core';
+import { TuiAlertService } from '@taiga-ui/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
@@ -59,7 +59,7 @@ export class SearchComponent implements OnInit {
       this.alertService
         .open(`Movie added to watch list`, {
           label: movie.title,
-          status: TuiNotification.Success,
+          appearance: 'success',
         })
         .subscribe();
       this.backToMovies();
