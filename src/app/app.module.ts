@@ -33,18 +33,14 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { MovieCardComponent } from './movie-card/movie-card.component';
+import { MoviesComponent } from './movies/movies.component';
 import { SearchComponent } from './search/search.component';
 import { AuthInterceptorProvider } from './services/auth-interceptor.service';
 import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    HomeComponent,
-    SearchComponent,
-    HeaderComponent,
-  ],
+  declarations: [AppComponent, LoginComponent, HomeComponent, SearchComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -78,9 +74,11 @@ import { AuthenticationService } from './services/authentication.service';
     TuiIcon,
     TuiFallbackSrcPipe,
     TuiInitialsPipe,
+    MovieCardComponent,
+    HeaderComponent,
+    MoviesComponent,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider, NG_EVENT_PLUGINS],
   bootstrap: [AppComponent],
-  exports: [HeaderComponent],
 })
 export class AppModule {}

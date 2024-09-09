@@ -6,4 +6,7 @@ export type WatchListMovie = {
   release_date: string;
   title: string | null;
   name: string | null;
+  downloaded: boolean | null;
+  watched: boolean | null;
+  rating: number | null;
 };

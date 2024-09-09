@@ -37,12 +37,12 @@ export class SearchComponent implements OnInit {
       }
     });
 
-    this.moviesService.getMovies().subscribe((res) => {
+    this.moviesService.getWatchlist().subscribe((res) => {
       this.watchList = res;
     });
   }
 
-  backToMovies() {
+  backToHome() {
     this.searchService.setSearchTerm('');
     this.router.navigateByUrl('/home');
   }
@@ -62,7 +62,7 @@ export class SearchComponent implements OnInit {
           appearance: 'success',
         })
         .subscribe();
-      this.backToMovies();
+      this.backToHome();
     });
   }
 }

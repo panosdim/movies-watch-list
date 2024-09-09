@@ -1,13 +1,6 @@
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  TuiAlertService,
-  TuiDialogContext,
-  TuiDialogService
-} from '@taiga-ui/core';
-import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
-import { Observable, Subscription, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { TuiAlertService } from '@taiga-ui/core';
+import { Observable, of } from 'rxjs';
 import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
 
@@ -19,21 +12,12 @@ export class HomeComponent implements OnInit {
   released$!: Observable<WatchListMovie[]>;
   coming$!: Observable<WatchListMovie[]>;
   unknown$!: Observable<WatchListMovie[]>;
-
-  deleteDialog!: Subscription;
-
-  imageBaseUrl = environment.imageBaseUrl;
-
   now: string = new Date().toISOString().slice(0, 10);
 
-  movie: WatchListMovie | undefined;
-
   constructor(
-    private clipboard: Clipboard,
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
-    private readonly alertService: TuiAlertService,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService
+    private readonly alertService: TuiAlertService
   ) {}
 
   ngOnInit(): void {
@@ -48,8 +32,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  private fetchWatchList() {
-    this.moviesService.getMovies().subscribe((res) => {
+  fetchWatchList() {
+    this.moviesService.getWatchlist().subscribe((res) => {
       const temp = res.filter(
         (movie: WatchListMovie) => movie.release_date !== null
       );
@@ -70,34 +54,5 @@ export class HomeComponent implements OnInit {
         res.filter((movie: WatchListMovie) => movie.release_date === null)
       );
     });
-  }
-
-  copyMovieTitle(movieTitle: string | null) {
-    movieTitle && this.clipboard.copy(movieTitle);
-  }
-
-  showDeleteDialog(
-    content: PolymorpheusContent<TuiDialogContext>,
-    movie: WatchListMovie
-  ): void {
-    this.deleteDialog = this.dialogService.open(content).subscribe();
-    this.movie = movie;
-  }
-
-  deleteMovie(): void {
-    this.deleteDialog.unsubscribe();
-    if (this.movie) {
-      const movieTitle = this.movie.title;
-      this.moviesService.removeFromWatchList(this.movie).subscribe(() => {
-        this.alertService
-          .open(`Movie removed from watch list`, {
-            label: movieTitle,
-            appearance: 'success',
-          })
-          .subscribe();
-        this.movie = undefined;
-        this.fetchWatchList();
-      });
-    }
   }
 }

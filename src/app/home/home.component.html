@@ -2,58 +2,13 @@
 
 <div class="root">
   <p class="section-title">
-    Released on DVD ({{ (released$ | async)?.length }})
+    Released on DVD ({{ ((released$ | async)?.length || 0) + ((coming$ | async)?.length || 0) }})
   </p>
   <div class="section">
-    <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of released$ | async; else: loading">
-      <div class="movie-card">
-        <a href="https://www.themoviedb.org/movie/{{ movie.movie_id }}" target="_blank" rel="noopener noreferrer">
-          <img srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
-                  {{ imageBaseUrl }}w300{{ movie.image }} 300w" alt="{{ movie.title }}"
-            sizes="(max-width: 47.9625em) 185px, 300px" />
-        </a>
-        <div>
-          <p class="tui-text_h6">
-            {{ movie.title }}&nbsp;<tui-icon icon="@tui.copy" (click)="copyMovieTitle(movie.title)"></tui-icon>
-          </p>
-          <tui-chip class="tui-space_bottom-4" size="m" appearance="success">
-            {{ movie.release_date | date : 'dd MMM yyyy' }}
-          </tui-chip>
-        </div>
-        <footer>
-          <button tuiButton type="button" appearance="destructive" size="m" (click)="showDeleteDialog(template, movie)">
-            Delete
-          </button>
-        </footer>
-      </div>
-    </div>
-    <ng-template #loading>
-      <tui-loader size="xxl"></tui-loader>
-    </ng-template>
-  </div>
-
-  <p class="section-title">Coming Soon ({{ (coming$ | async)?.length }})</p>
-  <div class="section">
-    <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of coming$ | async; else: loading">
-      <div class="movie-card">
-        <a href="https://www.themoviedb.org/movie/{{ movie.movie_id }}" target="_blank" rel="noopener noreferrer">
-          <img srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
-                  {{ imageBaseUrl }}w300{{ movie.image }} 300w" alt="{{ movie.title }}"
-            sizes="(max-width: 47.9625em) 185px, 300px" />
-        </a>
-        <p class="tui-text_h6">
-          {{ movie.title }}&nbsp;<tui-icon icon="@tui.copy" (click)="copyMovieTitle(movie.title)"></tui-icon>
-        </p>
-        <tui-chip class="tui-space_bottom-4" size="m" appearance="success">
-          {{ movie.release_date | date : 'dd MMM yyyy' }}
-        </tui-chip>
-        <footer>
-          <button tuiButton type="button" appearance="destructive" size="m" (click)="showDeleteDialog(template, movie)">
-            Delete
-          </button>
-        </footer>
-      </div>
-    </div>
+    <app-movie-card *ngFor="let movie of released$ | async; else: loading" [movie]="movie"
+      (refetchWatchlist)="fetchWatchList()"></app-movie-card>
+    <app-movie-card *ngFor="let movie of coming$ | async; else: loading" [movie]="movie"
+      (refetchWatchlist)="fetchWatchList()"></app-movie-card>
     <ng-template #loading>
       <tui-loader size="xxl"></tui-loader>
     </ng-template>
@@ -63,24 +18,8 @@
     Unknown Release Date ({{ (unknown$ | async)?.length }})
   </p>
   <div class="section">
-    <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of unknown$ | async; else: loading">
-      <div class="movie-card">
-        <a href="https://www.themoviedb.org/movie/{{ movie.movie_id }}" target="_blank" rel="noopener noreferrer">
-          <img srcset="{{ imageBaseUrl }}w185{{ movie.image }} 185w,
-                  {{ imageBaseUrl }}w300{{ movie.image }} 300w" alt="{{ movie.title }}"
-            sizes="(max-width: 47.9625em) 185px, 300px" />
-        </a>
-        <p class="tui-text_h6">
-          {{ movie.title }}&nbsp;<tui-icon icon="@tui.copy" (click)="copyMovieTitle(movie.title)"></tui-icon>
-        </p>
-
-        <footer>
-          <button tuiButton type="button" appearance="destructive" size="m" (click)="showDeleteDialog(template, movie)">
-            Delete
-          </button>
-        </footer>
-      </div>
-    </div>
+    <app-movie-card *ngFor="let movie of unknown$ | async; else: loading" [movie]="movie"
+      (refetchWatchlist)="fetchWatchList()"></app-movie-card>
     <ng-template #loading>
       <tui-loader size="xxl"></tui-loader>
     </ng-template>
@@ -95,14 +34,3 @@
     not endorsed or certified by <a href="https://www.themoviedb.org/">TMDb</a>.
   </p>
 </div>
-
-<ng-template #template let-observer>
-  <p class="tui-text_h3">Delete Movie</p>
-  <p class="tui-text_h5">Do you want to remove movie from your watch list?</p>
-  <button tuiButton type="button" size="m" class="tui-space_right-3" (click)="deleteMovie()">
-    Yes
-  </button>
-  <button tuiButton type="button" size="m" (click)="observer.complete()">
-    No
-  </button>
-</ng-template>

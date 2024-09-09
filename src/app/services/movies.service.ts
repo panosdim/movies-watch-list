@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TuiAlertService } from '@taiga-ui/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
@@ -16,8 +16,8 @@ export class MoviesService {
     private readonly alertService: TuiAlertService
   ) {}
 
-  getMovies(): Observable<WatchListMovie[]> {
-    return this.http.get<WatchListMovie[]>(environment.moviesUrl()).pipe(
+  getWatchlist(): Observable<WatchListMovie[]> {
+    return this.http.get<WatchListMovie[]>(environment.watchlistUrl()).pipe(
       catchError((_err) => {
         this.alertService
           .open(`Error occurred while retrieving movies watch list`, {
@@ -32,7 +32,7 @@ export class MoviesService {
 
   addToWatchList(movie: MovieType): Observable<WatchListMovie> {
     return this.http
-      .post<WatchListMovie>(environment.moviesUrl(), {
+      .post<WatchListMovie>(environment.watchlistUrl(), {
         title: movie.title,
         overview: movie.overview,
         movie_id: movie.id,
@@ -53,7 +53,7 @@ export class MoviesService {
 
   removeFromWatchList(movie: WatchListMovie): Observable<void> {
     return this.http
-      .delete<void>(environment.moviesUrl() + `/${movie.id}`)
+      .delete<void>(environment.watchlistUrl() + `/${movie.id}`)
       .pipe(
         catchError((_err) => {
           this.alertService
@@ -79,5 +79,69 @@ export class MoviesService {
         return of();
       })
     );
+  }
+
+  markMovieAsDownloaded(movie: WatchListMovie): Observable<void> {
+    return this.http
+      .post<void>(environment.moviesUrl() + `/mark/downloaded/${movie.id}`, {})
+      .pipe(
+        catchError((_err) => {
+          this.alertService
+            .open(`Error occurred while mark movie as downloaded`, {
+              label: `Error in update movie`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of();
+        })
+      );
+  }
+
+  markMovieAsWatched(movie: WatchListMovie): Observable<void> {
+    return this.http
+      .post<void>(environment.moviesUrl() + `/mark/watched/${movie.id}`, {})
+      .pipe(
+        catchError((_err) => {
+          this.alertService
+            .open(`Error occurred while mark movie as downloaded`, {
+              label: `Error in update movie`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of();
+        })
+      );
+  }
+
+  getMovies(): Observable<WatchListMovie[]> {
+    return this.http.get<WatchListMovie[]>(environment.moviesUrl()).pipe(
+      catchError((_err) => {
+        this.alertService
+          .open(`Error occurred while retrieving movies list`, {
+            label: `Error in movies list`,
+            appearance: 'error',
+          })
+          .subscribe();
+        return of();
+      })
+    );
+  }
+
+  rateMovie(movie: WatchListMovie, rating: number): Observable<void> {
+    return this.http
+      .post<void>(environment.moviesUrl() + `/rate/${movie.id}`, {
+        rating: rating,
+      })
+      .pipe(
+        catchError((_err) => {
+          this.alertService
+            .open(`Error occurred while rating movie`, {
+              label: `Error in rating movie`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of();
+        })
+      );
   }
 }
