@@ -51,7 +51,7 @@ export class MovieCardComponent implements OnInit {
   protected rating!: number;
 
   ngOnInit() {
-    this.rating = this.movie.rating ? this.movie.rating : 0; // Move initialization here
+    this.rating = this.movie.rating;
 
     if (this.movie && this.movie.release_date) {
       this.chipAppearance =

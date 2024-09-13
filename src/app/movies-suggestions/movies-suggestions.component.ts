@@ -1,41 +1,56 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { TuiAlertService } from '@taiga-ui/core';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import {
+  TuiAlertService,
+  TuiButton,
+  TuiLoader,
+  TuiSurface,
+  TuiTitle,
+} from '@taiga-ui/core';
+import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
-import { SearchService } from '../services/search.service';
 
 @Component({
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.less'],
+  selector: 'app-movies-suggestions',
+  standalone: true,
+  imports: [
+    TuiCardLarge,
+    TuiHeader,
+    TuiSurface,
+    TuiTitle,
+    TuiLoader,
+    AsyncPipe,
+    NgForOf,
+    NgIf,
+    TuiButton,
+  ],
+  templateUrl: './movies-suggestions.component.html',
+  styleUrl: './movies-suggestions.component.less',
 })
-export class SearchComponent implements OnInit {
-  searchResults$!: Observable<MovieType[]>;
-  inSearch: boolean = false;
-  imageBaseUrl = environment.imageBaseUrl + 'w92';
+export class MoviesSuggestionsComponent {
+  @Output() refetchWatchlist = new EventEmitter();
+  moviesSuggestions$!: Observable<MovieType[]>;
+  imageBaseUrl = environment.imageBaseUrl;
   watchList: WatchListMovie[] | undefined;
   movies: WatchListMovie[] | undefined;
 
+  ngOnInit(): void {
+    this.fetchData();
+  }
+
   constructor(
-    private router: Router,
-    private searchService: SearchService,
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
   ) {}
 
-  ngOnInit(): void {
-    this.searchService.getSearchTerm().subscribe((term) => {
-      if (term) {
-        this.inSearch = true;
-        this.searchResults$ = this.searchService.searchMovies(term);
-      } else {
-        this.inSearch = false;
-        this.searchResults$ = of([]);
-      }
+  fetchData() {
+    this.moviesService.getMoviesSuggestions(8).subscribe((res) => {
+      this.moviesSuggestions$ = of(res);
     });
 
     this.moviesService.getWatchlist().subscribe((res) => {
@@ -45,11 +60,6 @@ export class SearchComponent implements OnInit {
     this.moviesService.getMovies().subscribe((res) => {
       this.movies = res;
     });
-  }
-
-  backToHome() {
-    this.searchService.setSearchTerm('');
-    this.router.navigateByUrl('/home');
   }
 
   isMovieAlreadyInWatchList(movieId: number): boolean {
@@ -71,7 +81,10 @@ export class SearchComponent implements OnInit {
           appearance: 'success',
         })
         .subscribe();
-      this.backToHome();
+
+      this.moviesSuggestions$ = of();
+      this.refetchWatchlist.emit();
+      this.fetchData();
     });
   }
 }

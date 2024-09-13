@@ -34,6 +34,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+import { MoviesSuggestionsComponent } from './movies-suggestions/movies-suggestions.component';
 import { MoviesComponent } from './movies/movies.component';
 import { SearchComponent } from './search/search.component';
 import { AuthInterceptorProvider } from './services/auth-interceptor.service';
@@ -77,6 +78,7 @@ import { AuthenticationService } from './services/authentication.service';
     MovieCardComponent,
     HeaderComponent,
     MoviesComponent,
+    MoviesSuggestionsComponent,
   ],
   providers: [AuthenticationService, AuthInterceptorProvider, NG_EVENT_PLUGINS],
   bootstrap: [AppComponent],

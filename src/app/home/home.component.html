@@ -1,6 +1,7 @@
 <app-header></app-header>
 
 <div class="root">
+  <app-movies-suggestions (refetchWatchlist)="fetchWatchList()"> </app-movies-suggestions>
   <p class="section-title">
     Released on DVD ({{ ((released$ | async)?.length || 0) + ((coming$ | async)?.length || 0) }})
   </p>

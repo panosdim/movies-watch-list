@@ -34,7 +34,6 @@ export class MoviesService {
     return this.http
       .post<WatchListMovie>(environment.watchlistUrl(), {
         title: movie.title,
-        overview: movie.overview,
         movie_id: movie.id,
         image: movie.poster_path,
       })
@@ -137,6 +136,24 @@ export class MoviesService {
           this.alertService
             .open(`Error occurred while rating movie`, {
               label: `Error in rating movie`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of();
+        })
+      );
+  }
+
+  getMoviesSuggestions(numMovies: number): Observable<MovieType[]> {
+    return this.http
+      .get<MovieType[]>(
+        environment.moviesUrl() + `/suggestion?numMovies=${numMovies}`
+      )
+      .pipe(
+        catchError((_err) => {
+          this.alertService
+            .open(`Error occurred while retrieving suggested movies`, {
+              label: `Error in movies suggest list`,
               appearance: 'error',
             })
             .subscribe();
