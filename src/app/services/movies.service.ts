@@ -150,7 +150,8 @@ export class MoviesService {
         environment.moviesUrl() + `/suggestion?numMovies=${numMovies}`
       )
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.log(err);
           this.alertService
             .open(`Error occurred while retrieving suggested movies`, {
               label: `Error in movies suggest list`,

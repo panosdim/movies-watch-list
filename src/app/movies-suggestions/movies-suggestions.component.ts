@@ -49,8 +49,16 @@ export class MoviesSuggestionsComponent {
   ) {}
 
   fetchData() {
-    this.moviesService.getMoviesSuggestions(8).subscribe((res) => {
-      this.moviesSuggestions$ = of(res);
+    this.moviesService.getMoviesSuggestions(20).subscribe((res) => {
+      this.moviesSuggestions$ = of(
+        res
+          .filter(
+            (suggestion) =>
+              !this.isMovieAlreadyInList(suggestion.id, this.watchList) &&
+              !this.isMovieAlreadyInList(suggestion.id, this.movies)
+          )
+          .slice(0, 8)
+      );
     });
 
     this.moviesService.getWatchlist().subscribe((res) => {
@@ -60,6 +68,14 @@ export class MoviesSuggestionsComponent {
     this.moviesService.getMovies().subscribe((res) => {
       this.movies = res;
     });
+  }
+
+  // Helper function to check if a movie ID exists in a list
+  isMovieAlreadyInList(
+    movieId: number,
+    list: WatchListMovie[] | undefined
+  ): boolean {
+    return list?.some((movie) => movie.movie_id === movieId) ?? false;
   }
 
   isMovieAlreadyInWatchList(movieId: number): boolean {
