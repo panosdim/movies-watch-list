@@ -6,9 +6,7 @@ import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MoviesService {
   constructor(
     private http: HttpClient,

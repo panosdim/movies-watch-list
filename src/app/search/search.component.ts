@@ -1,16 +1,34 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TuiAlertService } from '@taiga-ui/core';
+import {
+  TuiAlertService,
+  TuiButton,
+  TuiLoader,
+  TuiSurface,
+} from '@taiga-ui/core';
+import { TuiCardLarge } from '@taiga-ui/layout';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { HeaderComponent } from '../header/header.component';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
 import { SearchService } from '../services/search.service';
 
 @Component({
+  selector: 'app-search',
+  standalone: true,
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.less'],
+  imports: [
+    CommonModule,
+    TuiCardLarge,
+    TuiSurface,
+    TuiButton,
+    TuiLoader,
+    HeaderComponent,
+  ],
 })
 export class SearchComponent implements OnInit {
   searchResults$!: Observable<MovieType[]>;

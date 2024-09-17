@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PopularMoviesType } from '../models/movie';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PopularService {
   constructor(private http: HttpClient) {}
 

@@ -1,44 +1,30 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AuthenticationService } from './authentication.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuardService implements CanActivate {
-  constructor(
-    private router: Router,
-    private authService: AuthenticationService
-  ) {}
-  canActivate(
-    _route: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot
-  ): boolean {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded: any = jwtDecode(token);
-        if (decoded.hasOwnProperty('exp') && decoded.exp * 1000 > Date.now()) {
-          return true;
-        }
-        this.authService.logout();
-        this.router.navigateByUrl('/login');
-        return false;
-      } catch {
-        this.authService.logout();
-        this.router.navigateByUrl('/login');
-        return false;
-      }
-    }
+export const authGuard = () => {
+  const router = inject(Router);
+  const authService = inject(AuthenticationService);
+  const token = localStorage.getItem('token');
 
-    this.authService.logout();
-    this.router.navigateByUrl('/login');
-    return false;
+  if (token) {
+    try {
+      const decoded: any = jwtDecode(token);
+      if (decoded.hasOwnProperty('exp') && decoded.exp * 1000 > Date.now()) {
+        return true; // The token is valid
+      }
+      authService.logout();
+      router.navigateByUrl('/login');
+      return false; // Token has expired
+    } catch {
+      authService.logout();
+      router.navigateByUrl('/login');
+      return false; // Token decoding failed
+    }
   }
-}
+
+  authService.logout();
+  router.navigateByUrl('/login');
+  return false; // No token, not authenticated
+};

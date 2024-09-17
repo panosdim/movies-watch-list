@@ -1,12 +1,30 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { TuiAlertService } from '@taiga-ui/core';
+import {
+  TuiAlertService,
+  TuiButton,
+  TuiError,
+  TuiLoader,
+} from '@taiga-ui/core';
+import { TuiFieldErrorPipe } from '@taiga-ui/kit';
+import {
+  TuiInputModule,
+  TuiInputPasswordModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/legacy';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType, PopularMoviesType } from '../models/movie';
@@ -15,9 +33,24 @@ import { AuthenticationService } from '../services/authentication.service';
 import { PopularService } from '../services/popular.service';
 
 @Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    TuiInputModule,
+    TuiInputPasswordModule,
+    TuiButton,
+    TuiError,
+    TuiLoader,
+    TuiFieldErrorPipe,
+    TuiTextfieldControllerModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less'],
+  styleUrl: './login.component.less',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [PopularService],
 })
 export class LoginComponent implements OnInit {
   readonly loginForm = new FormGroup({

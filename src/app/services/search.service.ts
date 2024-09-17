@@ -1,13 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TuiAlertService } from '@taiga-ui/core';
-import { BehaviorSubject, catchError, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType, PopularMoviesType } from '../models/movie';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class SearchService {
   public searchTerm = new BehaviorSubject<string>('');
 

@@ -1,12 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { TuiAlertService } from '@taiga-ui/core';
+import { TuiAlertService, TuiLoader } from '@taiga-ui/core';
 import { Observable, of } from 'rxjs';
+import { HeaderComponent } from '../header/header.component';
 import { WatchListMovie } from '../models/watchlist';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { MoviesSuggestionsComponent } from '../movies-suggestions/movies-suggestions.component';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
+  standalone: true,
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less'],
+  imports: [
+    CommonModule,
+    MovieCardComponent,
+    MoviesSuggestionsComponent,
+    HeaderComponent,
+    TuiLoader,
+  ],
 })
 export class HomeComponent implements OnInit {
   released$!: Observable<WatchListMovie[]>;

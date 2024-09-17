@@ -7,23 +7,25 @@
 </div>
 
 <div class="search-results">
-  <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of searchResults$ | async; else: loading; empty: blank">
-    <div class="movie-contents">
-      <img class="tui-space_right-4" src="{{ imageBaseUrl }}{{ movie.poster_path }}" alt="{{ movie.title }}" />
-      <div class="tui-space_right-4">
-        <div class="tui-text_h4">{{ movie.title }}</div>
-        <div class="tui-text_h5">{{ movie.release_date }}</div>
-        <p class="tui-text_body-m">{{ movie.overview }}</p>
+  <ng-container *ngIf="(searchResults$ | async) as results">
+    <div *ngIf="results.length > 0; else loading">
+      <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of results">
+        <div class="movie-contents">
+          <img class="tui-space_right-4" src="{{ imageBaseUrl }}{{ movie.poster_path }}" alt="{{ movie.title }}" />
+          <div class="tui-space_right-4">
+            <div class="tui-text_h4">{{ movie.title }}</div>
+            <div class="tui-text_h5">{{ movie.release_date }}</div>
+            <p class="tui-text_body-m">{{ movie.overview }}</p>
+          </div>
+          <button tuiButton [disabled]="isMovieAlreadyInWatchList(movie.id)" (click)="addMovieToWatchList(movie)">
+            Add to watch list
+          </button>
+        </div>
       </div>
-      <button tuiButton [disabled]="isMovieAlreadyInWatchList(movie.id)" (click)="addMovieToWatchList(movie)">
-        Add to watch list
-      </button>
     </div>
-  </div>
-  <ng-template #loading>
-    <tui-loader size="xxl"></tui-loader>
-  </ng-template>
-  <ng-template #blank>
-    <p *ngIf="inSearch" class="tui-text_h1 center">Nothing found</p>
-  </ng-template>
+    <ng-template #loading>
+      <tui-loader size="xxl"></tui-loader>
+    </ng-template>
+    <p *ngIf="inSearch && results.length === 0" class="tui-text_h1 center">Nothing found</p>
+  </ng-container>
 </div>
