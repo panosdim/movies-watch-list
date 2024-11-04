@@ -6,14 +6,20 @@
     Released on DVD ({{ ((released$ | async)?.length || 0) + ((coming$ | async)?.length || 0) }})
   </p>
   <div class="section">
-    <ng-container *ngIf="released$ | async as releasedMovies">
-      <app-movie-card *ngFor="let movie of releasedMovies" [movie]="movie" (refetchWatchlist)="fetchWatchList()">
-      </app-movie-card>
-    </ng-container>
-    <ng-container *ngIf="coming$ | async as comingMovies">
-      <app-movie-card *ngFor="let movie of comingMovies" [movie]="movie" (refetchWatchlist)="fetchWatchList()">
-      </app-movie-card>
-    </ng-container>
+    <div class="container">
+      <div class="movies-container">
+        <ng-container *ngIf="released$ | async as releasedMovies">
+          <app-movie-card *ngFor="let movie of releasedMovies" [movie]="movie" (refetchWatchlist)="fetchWatchList()">
+          </app-movie-card>
+        </ng-container>
+      </div>
+      <div class="movies-container">
+        <ng-container *ngIf="coming$ | async as comingMovies" class="coming">
+          <app-movie-card *ngFor="let movie of comingMovies" [movie]="movie" (refetchWatchlist)="fetchWatchList()">
+          </app-movie-card>
+        </ng-container>
+      </div>
+    </div>
     <tui-loader *ngIf="(released$ | async)?.length === 0 && (coming$ | async)?.length === 0" size="xxl">
     </tui-loader>
   </div>
