@@ -8,7 +8,7 @@ import {
   TuiSurface,
 } from '@taiga-ui/core';
 import { TuiCardLarge } from '@taiga-ui/layout';
-import { Observable, of } from 'rxjs';
+import { finalize, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HeaderComponent } from '../header/header.component';
 import { MovieType } from '../models/movie';
@@ -33,6 +33,7 @@ import { SearchService } from '../services/search.service';
 export class SearchComponent implements OnInit {
   searchResults$!: Observable<MovieType[]>;
   inSearch: boolean = false;
+  searchCompleted: boolean = false;
   imageBaseUrl = environment.imageBaseUrl + 'w92';
   watchList: WatchListMovie[] | undefined;
   movies: WatchListMovie[] | undefined;
@@ -49,7 +50,10 @@ export class SearchComponent implements OnInit {
     this.searchService.getSearchTerm().subscribe((term) => {
       if (term) {
         this.inSearch = true;
-        this.searchResults$ = this.searchService.searchMovies(term);
+        this.searchCompleted = false;
+        this.searchResults$ = this.searchService
+          .searchMovies(term)
+          .pipe(finalize(() => (this.searchCompleted = true)));
       } else {
         this.inSearch = false;
         this.searchResults$ = of([]);
