@@ -6,11 +6,11 @@ import { TuiTabBar } from '@taiga-ui/addon-mobile';
 import { TuiLet } from '@taiga-ui/cdk';
 import {
   TuiAlertService,
+  TuiAppearance,
   TuiButton,
   TuiDataList,
   TuiFallbackSrcPipe,
   TuiInitialsPipe,
-  TuiSurface,
 } from '@taiga-ui/core';
 import { TuiAvatar } from '@taiga-ui/kit';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
@@ -34,7 +34,7 @@ import { SearchService } from '../services/search.service';
     TuiButton,
     TuiLet,
     TuiCardLarge,
-    TuiSurface,
+    TuiAppearance,
     TuiHeader,
     TuiTabBar,
     RouterLink,

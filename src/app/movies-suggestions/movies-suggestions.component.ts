@@ -2,9 +2,9 @@ import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import {
   TuiAlertService,
+  TuiAppearance,
   TuiButton,
   TuiLoader,
-  TuiSurface,
   TuiTitle,
 } from '@taiga-ui/core';
 import { TuiCardLarge, TuiHeader } from '@taiga-ui/layout';
@@ -20,7 +20,7 @@ import { MoviesService } from '../services/movies.service';
   imports: [
     TuiCardLarge,
     TuiHeader,
-    TuiSurface,
+    TuiAppearance,
     TuiTitle,
     TuiLoader,
     AsyncPipe,

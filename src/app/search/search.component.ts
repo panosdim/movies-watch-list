@@ -3,9 +3,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   TuiAlertService,
+  TuiAppearance,
   TuiButton,
   TuiLoader,
-  TuiSurface,
 } from '@taiga-ui/core';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { finalize, Observable, of } from 'rxjs';
@@ -24,8 +24,8 @@ import { SearchService } from '../services/search.service';
   imports: [
     CommonModule,
     TuiCardLarge,
-    TuiSurface,
     TuiButton,
+    TuiAppearance,
     TuiLoader,
     HeaderComponent,
   ],

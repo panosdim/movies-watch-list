@@ -11,11 +11,11 @@ import {
 import { FormsModule } from '@angular/forms';
 import {
   TuiAlertService,
+  TuiAppearance,
   TuiButton,
   TuiDialogContext,
   TuiDialogService,
   TuiIcon,
-  TuiSurface,
 } from '@taiga-ui/core';
 import { TuiChip, TuiRating } from '@taiga-ui/kit';
 import { TuiCardLarge } from '@taiga-ui/layout';
@@ -34,7 +34,7 @@ import { MoviesService } from '../services/movies.service';
     DatePipe,
     TuiButton,
     TuiCardLarge,
-    TuiSurface,
+    TuiAppearance,
     TuiRating,
     FormsModule,
   ],

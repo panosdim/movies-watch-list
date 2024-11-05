@@ -8,7 +8,7 @@
 
 <div class="search-results">
   <ng-container *ngIf="(searchResults$ | async) as results">
-    <div tuiCardLarge tuiSurface="flat" *ngFor="let movie of results">
+    <div tuiCardLarge tuiAppearance="floating" *ngFor="let movie of results">
       <div class="movie-contents">
         <img class="tui-space_right-4" src="{{ imageBaseUrl }}{{ movie.poster_path }}" alt="{{ movie.title }}" />
         <div class="tui-space_right-4">
