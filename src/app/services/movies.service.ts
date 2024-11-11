@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TuiAlertService } from '@taiga-ui/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, retry, timer } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
@@ -148,6 +148,16 @@ export class MoviesService {
         environment.moviesUrl() + `/suggestion?numMovies=${numMovies}`
       )
       .pipe(
+        retry({
+          count: 4,
+          delay: (error, retryCount) => {
+            if (error.status !== 503) {
+              throw error;
+            }
+            console.warn(`Retry attempt #${retryCount}`);
+            return timer(5000 * retryCount);
+          },
+        }),
         catchError((err) => {
           console.log(err);
           this.alertService
@@ -156,7 +166,7 @@ export class MoviesService {
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          return of([]);
         })
       );
   }
