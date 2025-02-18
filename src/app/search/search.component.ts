@@ -17,18 +17,17 @@ import { MoviesService } from '../services/movies.service';
 import { SearchService } from '../services/search.service';
 
 @Component({
-  selector: 'app-search',
-  standalone: true,
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.less'],
-  imports: [
-    CommonModule,
-    TuiCardLarge,
-    TuiButton,
-    TuiAppearance,
-    TuiLoader,
-    HeaderComponent,
-  ],
+    selector: 'app-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.less'],
+    imports: [
+        CommonModule,
+        TuiCardLarge,
+        TuiButton,
+        TuiAppearance,
+        TuiLoader,
+        HeaderComponent,
+    ]
 })
 export class SearchComponent implements OnInit {
   searchResults$!: Observable<MovieType[]>;

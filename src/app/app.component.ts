@@ -5,12 +5,11 @@ import { MoviesService } from './services/movies.service';
 import { SearchService } from './services/search.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less'],
-  imports: [TuiRoot, RouterOutlet],
-  providers: [MoviesService, SearchService],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.less'],
+    imports: [TuiRoot, RouterOutlet],
+    providers: [MoviesService, SearchService]
 })
 export class AppComponent {
   title = 'movies-watch-list';

@@ -33,24 +33,23 @@ import { AuthenticationService } from '../services/authentication.service';
 import { PopularService } from '../services/popular.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-    TuiInputModule,
-    TuiInputPasswordModule,
-    TuiButton,
-    TuiError,
-    TuiLoader,
-    TuiFieldErrorPipe,
-    TuiTextfieldControllerModule,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.less',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PopularService],
+    selector: 'app-login',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        TuiInputModule,
+        TuiInputPasswordModule,
+        TuiButton,
+        TuiError,
+        TuiLoader,
+        TuiFieldErrorPipe,
+        TuiTextfieldControllerModule,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [PopularService]
 })
 export class LoginComponent implements OnInit {
   readonly loginForm = new FormGroup({

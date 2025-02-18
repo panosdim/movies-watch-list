@@ -15,21 +15,20 @@ import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-  selector: 'app-movies-suggestions',
-  standalone: true,
-  imports: [
-    TuiCardLarge,
-    TuiHeader,
-    TuiAppearance,
-    TuiTitle,
-    TuiLoader,
-    AsyncPipe,
-    NgForOf,
-    NgIf,
-    TuiButton,
-  ],
-  templateUrl: './movies-suggestions.component.html',
-  styleUrl: './movies-suggestions.component.less',
+    selector: 'app-movies-suggestions',
+    imports: [
+        TuiCardLarge,
+        TuiHeader,
+        TuiAppearance,
+        TuiTitle,
+        TuiLoader,
+        AsyncPipe,
+        NgForOf,
+        NgIf,
+        TuiButton,
+    ],
+    templateUrl: './movies-suggestions.component.html',
+    styleUrl: './movies-suggestions.component.less'
 })
 export class MoviesSuggestionsComponent {
   @Output() refetchWatchlist = new EventEmitter();

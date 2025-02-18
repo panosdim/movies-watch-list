@@ -20,29 +20,28 @@ import { AuthenticationService } from '../services/authentication.service';
 import { SearchService } from '../services/search.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    TuiAvatar,
-    TuiInputModule,
-    TuiFallbackSrcPipe,
-    TuiInitialsPipe,
-    AsyncPipe,
-    ...TuiDataList,
-    CommonModule,
-    ReactiveFormsModule,
-    TuiButton,
-    TuiLet,
-    TuiCardLarge,
-    TuiAppearance,
-    TuiHeader,
-    TuiTabBar,
-    RouterLink,
-    RouterLinkActive,
-  ],
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-header',
+    imports: [
+        TuiAvatar,
+        TuiInputModule,
+        TuiFallbackSrcPipe,
+        TuiInitialsPipe,
+        AsyncPipe,
+        ...TuiDataList,
+        CommonModule,
+        ReactiveFormsModule,
+        TuiButton,
+        TuiLet,
+        TuiCardLarge,
+        TuiAppearance,
+        TuiHeader,
+        TuiTabBar,
+        RouterLink,
+        RouterLinkActive,
+    ],
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   readonly search = new FormControl(this.searchService.searchTerm.getValue());

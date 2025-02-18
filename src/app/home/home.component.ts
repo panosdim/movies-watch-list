@@ -9,16 +9,15 @@ import { MoviesSuggestionsComponent } from '../movies-suggestions/movies-suggest
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-  standalone: true,
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less'],
-  imports: [
-    CommonModule,
-    MovieCardComponent,
-    MoviesSuggestionsComponent,
-    HeaderComponent,
-    TuiLoader,
-  ],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.less'],
+    imports: [
+        CommonModule,
+        MovieCardComponent,
+        MoviesSuggestionsComponent,
+        HeaderComponent,
+        TuiLoader,
+    ]
 })
 export class HomeComponent implements OnInit {
   released$!: Observable<WatchListMovie[]>;

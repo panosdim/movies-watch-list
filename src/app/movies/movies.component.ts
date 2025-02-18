@@ -8,18 +8,17 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-  selector: 'app-movies',
-  standalone: true,
-  imports: [
-    AsyncPipe,
-    TuiLoader,
-    MovieCardComponent,
-    HeaderComponent,
-    NgForOf,
-    NgIf,
-  ],
-  templateUrl: './movies.component.html',
-  styleUrl: './movies.component.less',
+    selector: 'app-movies',
+    imports: [
+        AsyncPipe,
+        TuiLoader,
+        MovieCardComponent,
+        HeaderComponent,
+        NgForOf,
+        NgIf,
+    ],
+    templateUrl: './movies.component.html',
+    styleUrl: './movies.component.less'
 })
 export class MoviesComponent implements OnInit {
   downloaded$!: Observable<WatchListMovie[]>;

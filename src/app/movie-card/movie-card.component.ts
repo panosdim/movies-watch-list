@@ -26,20 +26,19 @@ import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-  selector: 'app-movie-card',
-  standalone: true,
-  imports: [
-    TuiChip,
-    TuiIcon,
-    DatePipe,
-    TuiButton,
-    TuiCardLarge,
-    TuiAppearance,
-    TuiRating,
-    FormsModule,
-  ],
-  templateUrl: './movie-card.component.html',
-  styleUrl: './movie-card.component.less',
+    selector: 'app-movie-card',
+    imports: [
+        TuiChip,
+        TuiIcon,
+        DatePipe,
+        TuiButton,
+        TuiCardLarge,
+        TuiAppearance,
+        TuiRating,
+        FormsModule,
+    ],
+    templateUrl: './movie-card.component.html',
+    styleUrl: './movie-card.component.less'
 })
 export class MovieCardComponent implements OnInit {
   @Input({ required: true }) movie!: WatchListMovie;
