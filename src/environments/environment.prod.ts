@@ -3,5 +3,5 @@ import { environmentBase } from './environment.base';
 
 export const environment = {
   ...environmentBase,
-  apiUrl: 'https://movies.dsw.mywire.org/api', // Override for production
+  apiUrl: 'https://movies.deltasw.eu/api',
 };
