@@ -8,17 +8,17 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-    selector: 'app-movies',
-    imports: [
-        AsyncPipe,
-        TuiLoader,
-        MovieCardComponent,
-        HeaderComponent,
-        NgForOf,
-        NgIf,
-    ],
-    templateUrl: './movies.component.html',
-    styleUrl: './movies.component.less'
+  selector: 'app-movies',
+  imports: [
+    AsyncPipe,
+    TuiLoader,
+    MovieCardComponent,
+    HeaderComponent,
+    NgForOf,
+    NgIf,
+  ],
+  templateUrl: './movies.component.html',
+  styleUrl: './movies.component.less',
 })
 export class MoviesComponent implements OnInit {
   downloaded$!: Observable<WatchListMovie[]>;
@@ -44,7 +44,13 @@ export class MoviesComponent implements OnInit {
       this.watched$ = of(
         temp
           .filter((movie: WatchListMovie) => movie.watched)
-          .sort((a, b) => a.release_date.localeCompare(b.release_date))
+          .sort((a, b) => {
+            // First, separate movies with rating 0
+            if (a.rating === 0 && b.rating !== 0) return -1;
+            if (a.rating !== 0 && b.rating === 0) return 1;
+            // Then sort by release_date in descending order
+            return b.release_date.localeCompare(a.release_date);
+          })
       );
     });
   }
