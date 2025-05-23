@@ -16,7 +16,7 @@ export const environmentBase = {
     return this.apiUrl + '/autocomplete';
   },
   watchlistUrl() {
-    return this.apiUrl + '/watchlist';
+    return this.apiUrl + '/movies/watchlist';
   },
   moviesUrl() {
     return this.apiUrl + '/movies';

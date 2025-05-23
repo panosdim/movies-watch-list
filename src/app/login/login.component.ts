@@ -95,6 +95,13 @@ export class LoginComponent implements OnInit {
               })
               .subscribe();
             this.router.navigate(['home']);
+          } else {
+            this.alertService
+              .open(`Not correct response from backend`, {
+                label: `Login Failed`,
+                appearance: 'error',
+              })
+              .subscribe();
           }
         });
     }

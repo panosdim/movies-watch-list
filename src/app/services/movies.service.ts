@@ -30,10 +30,10 @@ export class MoviesService {
 
   addToWatchList(movie: MovieType): Observable<WatchListMovie> {
     return this.http
-      .post<WatchListMovie>(environment.watchlistUrl(), {
+      .post<WatchListMovie>(environment.moviesUrl(), {
         title: movie.title,
-        movie_id: movie.id,
-        image: movie.poster_path,
+        movieId: movie.id,
+        poster: movie.poster_path,
       })
       .pipe(
         catchError((_err) => {
