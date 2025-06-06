@@ -21,7 +21,7 @@ export const environmentBase = {
   moviesUrl() {
     return this.apiUrl + '/movies';
   },
-  updateReleaseDatesUrl() {
-    return this.apiUrl + '/update';
+  watchedMoviesUrl() {
+    return this.apiUrl + '/movies/watched';
   },
 };

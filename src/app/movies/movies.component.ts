@@ -1,11 +1,11 @@
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
-import {Component, OnInit} from '@angular/core';
-import {TuiLoader} from '@taiga-ui/core';
-import {map, Observable} from 'rxjs';
-import {HeaderComponent} from '../header/header.component';
-import {WatchListMovie} from '../models/watchlist';
-import {MovieCardComponent} from '../movie-card/movie-card.component';
-import {MoviesService} from '../services/movies.service';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { TuiLoader } from '@taiga-ui/core';
+import { map, Observable } from 'rxjs';
+import { HeaderComponent } from '../header/header.component';
+import { WatchListMovie } from '../models/watchlist';
+import { MovieCardComponent } from '../movie-card/movie-card.component';
+import { MoviesService } from '../services/movies.service';
 
 @Component({
   selector: 'app-movies',
@@ -23,15 +23,14 @@ import {MoviesService} from '../services/movies.service';
 export class MoviesComponent implements OnInit {
   watched$!: Observable<WatchListMovie[]>;
 
-  constructor(private moviesService: MoviesService) {
-  }
+  constructor(private moviesService: MoviesService) {}
 
   ngOnInit(): void {
     this.fetchMovies();
   }
 
   fetchMovies() {
-    this.watched$ = this.moviesService.getMovies().pipe(
+    this.watched$ = this.moviesService.getWatchedMovies().pipe(
       map((res) =>
         res
           .filter((movie: WatchListMovie) => movie.watched)

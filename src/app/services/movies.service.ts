@@ -48,44 +48,14 @@ export class MoviesService {
       );
   }
 
-  removeFromWatchList(movie: WatchListMovie): Observable<void> {
+  deleteMovie(movie: WatchListMovie): Observable<void> {
     return this.http
-      .delete<void>(environment.watchlistUrl() + `/${movie.id}`)
+      .delete<void>(environment.moviesUrl() + `/${movie.id}`)
       .pipe(
         catchError((_err) => {
           this.alertService
-            .open(`Error occurred while removing movie from watch list`, {
+            .open(`Error occurred while removing movie`, {
               label: `Error in removing`,
-              appearance: 'error',
-            })
-            .subscribe();
-          return of();
-        })
-      );
-  }
-
-  updateReleaseDates(): Observable<void> {
-    return this.http.get<void>(environment.updateReleaseDatesUrl()).pipe(
-      catchError((_err) => {
-        this.alertService
-          .open(`Error occurred while updating release dates`, {
-            label: `Error in update release dates`,
-            appearance: 'error',
-          })
-          .subscribe();
-        return of();
-      })
-    );
-  }
-
-  markMovieAsDownloaded(movie: WatchListMovie): Observable<void> {
-    return this.http
-      .post<void>(environment.moviesUrl() + `/mark/downloaded/${movie.id}`, {})
-      .pipe(
-        catchError((_err) => {
-          this.alertService
-            .open(`Error occurred while mark movie as downloaded`, {
-              label: `Error in update movie`,
               appearance: 'error',
             })
             .subscribe();
@@ -96,11 +66,11 @@ export class MoviesService {
 
   markMovieAsWatched(movie: WatchListMovie): Observable<void> {
     return this.http
-      .post<void>(environment.moviesUrl() + `/mark/watched/${movie.id}`, {})
+      .post<void>(environment.moviesUrl() + `/watched/${movie.id}`, {})
       .pipe(
         catchError((_err) => {
           this.alertService
-            .open(`Error occurred while mark movie as downloaded`, {
+            .open(`Error occurred while mark movie as watched`, {
               label: `Error in update movie`,
               appearance: 'error',
             })
@@ -110,8 +80,8 @@ export class MoviesService {
       );
   }
 
-  getMovies(): Observable<WatchListMovie[]> {
-    return this.http.get<WatchListMovie[]>(environment.moviesUrl()).pipe(
+  getWatchedMovies(): Observable<WatchListMovie[]> {
+    return this.http.get<WatchListMovie[]>(environment.watchedMoviesUrl()).pipe(
       catchError((_err) => {
         this.alertService
           .open(`Error occurred while retrieving movies list`, {

@@ -1,30 +1,45 @@
-import {Clipboard} from '@angular/cdk/clipboard';
-import {Component, EventEmitter, Inject, Input, OnInit, Output,} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {TuiAlertService, TuiAppearance, TuiButton, TuiDialogContext, TuiDialogService, TuiIcon,} from '@taiga-ui/core';
-import {TuiRating} from '@taiga-ui/kit';
-import {TuiCardLarge} from '@taiga-ui/layout';
-import {PolymorpheusContent} from '@taiga-ui/polymorpheus';
-import {Subscription} from 'rxjs';
-import {environment} from 'src/environments/environment';
-import {WatchListMovie} from '../models/watchlist';
-import {MoviesService} from '../services/movies.service';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {
+  TuiAlertService,
+  TuiAppearance,
+  TuiButton,
+  TuiDialogContext,
+  TuiDialogService,
+} from '@taiga-ui/core';
+import { TuiChip, TuiRating } from '@taiga-ui/kit';
+import { TuiCardLarge } from '@taiga-ui/layout';
+import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
+import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { WatchListMovie } from '../models/watchlist';
+import { MoviesService } from '../services/movies.service';
 
 @Component({
   selector: 'app-movie-card',
   imports: [
-    TuiIcon,
     TuiButton,
     TuiCardLarge,
     TuiAppearance,
     TuiRating,
     FormsModule,
+    TuiChip,
+    CommonModule,
   ],
   templateUrl: './movie-card.component.html',
-  styleUrl: './movie-card.component.less'
+  styleUrl: './movie-card.component.less',
 })
 export class MovieCardComponent implements OnInit {
-  @Input({required: true}) movie!: WatchListMovie;
+  @Input({ required: true }) movie!: WatchListMovie;
   @Output() refetchWatchlist = new EventEmitter();
   imageBaseUrl = environment.imageBaseUrl;
   deleteDialog!: Subscription;
@@ -37,28 +52,10 @@ export class MovieCardComponent implements OnInit {
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService,
     @Inject(TuiDialogService) private readonly dialogService: TuiDialogService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.rating = this.movie.rating;
-  }
-
-  copyMovieTitle(movieTitle: string | null) {
-    movieTitle && this.clipboard.copy(movieTitle);
-  }
-
-  markMovieAsDownloaded(): void {
-    this.moviesService.markMovieAsDownloaded(this.movie).subscribe(() => {
-      this.alertService
-        .open(`Movie marked as downloaded`, {
-          label: this.movie.title,
-          appearance: 'success',
-        })
-        .subscribe();
-
-      this.refetchWatchlist.emit();
-    });
   }
 
   markMovieAsWatched(): void {
@@ -98,7 +95,7 @@ export class MovieCardComponent implements OnInit {
     this.deleteDialog.unsubscribe();
     if (this.movie) {
       const movieTitle = this.movie.title;
-      this.moviesService.removeFromWatchList(this.movie).subscribe(() => {
+      this.moviesService.deleteMovie(this.movie).subscribe(() => {
         this.alertService
           .open(`Movie removed from watch list`, {
             label: movieTitle,
