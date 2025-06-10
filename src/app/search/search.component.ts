@@ -1,20 +1,16 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  TuiAlertService,
-  TuiAppearance,
-  TuiButton,
-  TuiLoader,
-} from '@taiga-ui/core';
-import { TuiCardLarge } from '@taiga-ui/layout';
-import { finalize, Observable, of, Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { HeaderComponent } from '../header/header.component';
-import { MovieType } from '../models/movie';
-import { WatchListMovie } from '../models/watchlist';
-import { MoviesService } from '../services/movies.service';
-import { SearchService } from '../services/search.service';
+import {CommonModule} from '@angular/common';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {TuiAlertService, TuiAppearance, TuiButton, TuiLoader,} from '@taiga-ui/core';
+import {TuiCardLarge} from '@taiga-ui/layout';
+import {finalize, Observable, of, Subscription} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {HeaderComponent} from '../header/header.component';
+import {MovieType} from '../models/movie';
+import {WatchListMovie} from '../models/watchlist';
+import {MoviesService} from '../services/movies.service';
+import {SearchService} from '../services/search.service';
+import {TuiProgressCircle, TuiProgressLabel} from "@taiga-ui/kit";
 
 @Component({
   selector: 'app-search',
@@ -27,6 +23,8 @@ import { SearchService } from '../services/search.service';
     TuiAppearance,
     TuiLoader,
     HeaderComponent,
+    TuiProgressCircle,
+    TuiProgressLabel
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {
@@ -36,7 +34,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   imageBaseUrl = environment.imageBaseUrl + 'w92';
   watchList: WatchListMovie[] = [];
   movies: WatchListMovie[] = [];
-
+  protected readonly Math = Math;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -45,7 +43,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     // Subscribe to search term changes
