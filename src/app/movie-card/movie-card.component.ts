@@ -1,4 +1,3 @@
-import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import {
   Component,
@@ -43,11 +42,9 @@ export class MovieCardComponent implements OnInit {
   @Output() refetchWatchlist = new EventEmitter();
   imageBaseUrl = environment.imageBaseUrl;
   deleteDialog!: Subscription;
-  chipAppearance: string = 'primary';
   protected rating!: number;
 
   constructor(
-    private clipboard: Clipboard,
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService,

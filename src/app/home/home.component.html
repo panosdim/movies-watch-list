@@ -1,14 +1,14 @@
 <app-header></app-header>
 
 <div class="root">
-  <app-movies-suggestions (refetchWatchlist)="fetchWatchList()"></app-movies-suggestions>
+<!--  <app-movies-suggestions (refetchWatchlist)="fetchWatchList()"></app-movies-suggestions>-->
 
   <p class="section-title">
     Watchlist ({{ (watchlist$ | async)?.length }})
   </p>
   <div class="section">
     <ng-container *ngIf="watchlist$ | async as watchListMovies">
-      <app-movie-card (refetchWatchlist)="fetchWatchList()" *ngFor="let movie of watchListMovies" [movie]="movie">
+      <app-movie-card *ngFor="let movie of watchListMovies" [movie]="movie">
       </app-movie-card>
     </ng-container>
     <tui-loader *ngIf="(watchlist$ | async) === null" size="xxl"></tui-loader>

@@ -1,20 +1,108 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TuiAlertService } from '@taiga-ui/core';
-import { Observable, catchError, of, retry, timer } from 'rxjs';
+import {Observable, catchError, of, retry, timer, BehaviorSubject, tap} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
 
 @Injectable()
 export class MoviesService {
+  private watchlistSubject = new BehaviorSubject<WatchListMovie[]>([]);
+
   constructor(
     private http: HttpClient,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
-  ) {}
+  ) {
+    this.loadWatchlist();
+  }
+
+  private loadWatchlist(): void {
+    this.http.get<WatchListMovie[]>(environment.watchlistUrl()).pipe(
+      catchError((err) => {
+        console.error('Error loading watchlist:', err);
+        this.alertService
+          .open(`Error occurred while retrieving movies watch list`, {
+            label: `Error in movies watch list`,
+            appearance: 'error',
+          })
+          .subscribe();
+        return of([]);
+      })
+    ).subscribe(watchlist => {
+      this.watchlistSubject.next(watchlist);
+    });
+  }
 
   getWatchlist(): Observable<WatchListMovie[]> {
+    return this.watchlistSubject.asObservable();
+  }
+
+  addToWatchList(movie: any): Observable<any> {
+    return this.addToWatchListAPI(movie).pipe(
+      tap((result) => {
+        // Add the new movie to the current list immediately for instant feedback
+        const currentList = this.watchlistSubject.value;
+
+        // Create the new movie object in the format expected by the UI
+        const newMovie: WatchListMovie = {
+          id: result.id,
+          movieId: result.movieId,
+          title: result.title,
+          poster: result.poster,
+          watched: result.watched || false,
+          rating: result.rating || 0,
+          watchInfo: result.watchInfo || null
+        };
+
+        const updatedList = [...currentList, newMovie];
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from server after a small delay to ensure consistency
+        timer(1000).subscribe(() => {
+          this.loadWatchlist();
+        });
+      })
+    );
+  }
+
+  deleteMovie(movie: WatchListMovie): Observable<any> {
+    return this.deleteMovieAPI(movie).pipe(
+      tap(() => {
+        // Remove the movie from current list immediately
+        const currentList = this.watchlistSubject.value;
+        const updatedList = currentList.filter(m => m.id !== movie.id);
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from server after a small delay
+        timer(500).subscribe(() => {
+          this.loadWatchlist();
+        });
+      })
+    );
+  }
+
+  markMovieAsWatched(movie: WatchListMovie): Observable<any> {
+    return this.markMovieAsWatchedAPI(movie).pipe(
+      tap(() => {
+        // Update the movie in current list immediately
+        const currentList = this.watchlistSubject.value;
+        const updatedList = currentList.map(m =>
+          m.id === movie.id ? { ...m, watched: true } : m
+        );
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from server after a small delay
+        timer(500).subscribe(() => {
+          this.loadWatchlist();
+        });
+      })
+    );
+  }
+
+  getWatchlistFromAPI(): Observable<WatchListMovie[]> {
     return this.http.get<WatchListMovie[]>(environment.watchlistUrl()).pipe(
       catchError((_err) => {
         this.alertService
@@ -23,12 +111,12 @@ export class MoviesService {
             appearance: 'error',
           })
           .subscribe();
-        return of();
+        return of([]);
       })
     );
   }
 
-  addToWatchList(movie: MovieType): Observable<WatchListMovie> {
+  addToWatchListAPI(movie: MovieType): Observable<WatchListMovie> {
     return this.http
       .post<WatchListMovie>(environment.moviesUrl(), {
         title: movie.title,
@@ -36,46 +124,49 @@ export class MoviesService {
         poster: movie.poster_path,
       })
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error adding movie to watchlist:', err);
           this.alertService
             .open(`Error occurred while adding movie to watch list`, {
               label: `Error in adding`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
 
-  deleteMovie(movie: WatchListMovie): Observable<void> {
+  deleteMovieAPI(movie: WatchListMovie): Observable<void> {
     return this.http
       .delete<void>(environment.moviesUrl() + `/${movie.id}`)
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error deleting movie:', err);
           this.alertService
             .open(`Error occurred while removing movie`, {
               label: `Error in removing`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
 
-  markMovieAsWatched(movie: WatchListMovie): Observable<void> {
+  markMovieAsWatchedAPI(movie: WatchListMovie): Observable<void> {
     return this.http
       .post<void>(environment.moviesUrl() + `/watched/${movie.id}`, {})
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error marking movie as watched:', err);
           this.alertService
             .open(`Error occurred while mark movie as watched`, {
               label: `Error in update movie`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
@@ -89,7 +180,7 @@ export class MoviesService {
             appearance: 'error',
           })
           .subscribe();
-        return of();
+        return of([]);
       })
     );
   }

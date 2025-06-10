@@ -20,20 +20,28 @@
       </button>
     </div>
     <div>
-      <p class="tui-text_h6">
+      <p class="tui-text_h5">
         {{ movie.title }}
       </p>
     </div>
 
     @if (movie.watchInfo !== null && !movie.watched) {
     <footer>
-      @if (movie.watchInfo.buy) {
-      <tui-chip class="tui-space_bottom-4" size="m" [appearance]="chipAppearance">
-        Buy
-        <ng-container *ngFor="let provider of movie.watchInfo.buy">
-          <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
-        </ng-container>
-      </tui-chip>
+      @if (movie.watchInfo.rent) {
+        <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
+          Rent
+          <ng-container *ngFor="let provider of movie.watchInfo.rent">
+            <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
+          </ng-container>
+        </tui-chip>
+      }
+      @if (movie.watchInfo.flatrate) {
+        <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
+          Stream
+          <ng-container *ngFor="let provider of movie.watchInfo.flatrate">
+            <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
+          </ng-container>
+        </tui-chip>
       }
     </footer> }
 
