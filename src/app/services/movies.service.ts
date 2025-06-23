@@ -1,10 +1,18 @@
-import {HttpClient} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {TuiAlertService} from '@taiga-ui/core';
-import {BehaviorSubject, catchError, Observable, of, retry, tap, timer} from 'rxjs';
-import {environment} from 'src/environments/environment';
-import {MovieType} from '../models/movie';
-import {WatchListMovie} from '../models/watchlist';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { TuiAlertService } from '@taiga-ui/core';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  of,
+  retry,
+  tap,
+  timer,
+} from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { MovieType } from '../models/movie';
+import { WatchListMovie } from '../models/watchlist';
 
 @Injectable()
 export class MoviesService {
@@ -36,7 +44,7 @@ export class MoviesService {
           poster: result.poster,
           watched: result.watched || false,
           rating: result.rating || 0,
-          watchInfo: result.watchInfo || null
+          watchInfo: result.watchInfo || null,
         };
 
         const updatedList = [...currentList, newMovie];
@@ -55,7 +63,7 @@ export class MoviesService {
       tap(() => {
         // Remove the movie from current list immediately
         const currentList = this.watchlistSubject.value;
-        const updatedList = currentList.filter(m => m.id !== movie.id);
+        const updatedList = currentList.filter((m) => m.id !== movie.id);
         this.watchlistSubject.next(updatedList);
 
         // Then refresh from the server after a small delay
@@ -71,8 +79,8 @@ export class MoviesService {
       tap(() => {
         // Update the movie in the current list immediately
         const currentList = this.watchlistSubject.value;
-        const updatedList = currentList.map(m =>
-          m.id === movie.id ? {...m, watched: true} : m
+        const updatedList = currentList.map((m) =>
+          m.id === movie.id ? { ...m, watched: true } : m
         );
         this.watchlistSubject.next(updatedList);
 
@@ -174,7 +182,7 @@ export class MoviesService {
   getMoviesSuggestions(numMovies: number): Observable<MovieType[]> {
     return this.http
       .get<MovieType[]>(
-        environment.moviesUrl() + `/suggestion?numMovies=${numMovies}`
+        environment.suggestionUrl() + `?numOfMovies=${numMovies}`
       )
       .pipe(
         retry({
@@ -201,19 +209,22 @@ export class MoviesService {
   }
 
   private loadWatchlist(): void {
-    this.http.get<WatchListMovie[]>(environment.watchlistUrl()).pipe(
-      catchError((err) => {
-        console.error('Error loading watchlist:', err);
-        this.alertService
-          .open(`Error occurred while retrieving movies watch list`, {
-            label: `Error in movies watch list`,
-            appearance: 'error',
-          })
-          .subscribe();
-        return of([]);
-      })
-    ).subscribe(watchlist => {
-      this.watchlistSubject.next(watchlist);
-    });
+    this.http
+      .get<WatchListMovie[]>(environment.watchlistUrl())
+      .pipe(
+        catchError((err) => {
+          console.error('Error loading watchlist:', err);
+          this.alertService
+            .open(`Error occurred while retrieving movies watch list`, {
+              label: `Error in movies watch list`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of([]);
+        })
+      )
+      .subscribe((watchlist) => {
+        this.watchlistSubject.next(watchlist);
+      });
   }
 }

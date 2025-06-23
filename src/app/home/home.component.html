@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="root">
-<!--  <app-movies-suggestions (refetchWatchlist)="fetchWatchList()"></app-movies-suggestions>-->
+  <app-movies-suggestions (refetchWatchlist)="fetchWatchlist()"></app-movies-suggestions>
 
   <p class="section-title">
     Watchlist ({{ (watchlist$ | async)?.length }})
@@ -15,9 +15,9 @@
   </div>
   <p class="footer">
     <a href="https://www.themoviedb.org">
-      <img alt="Powered by TMDb" src="assets/tmdb.png"/>
+      <img alt="Powered by TMDb" src="assets/tmdb.png" />
     </a>
-    <br/>
+    <br />
     This product uses the
     <a href="https://www.themoviedb.org/documentation/api">TMDb API</a> but is
     not endorsed or certified by <a href="https://www.themoviedb.org/">TMDb</a>.
