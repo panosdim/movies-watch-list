@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   EventEmitter,
@@ -31,9 +31,8 @@ import { MoviesService } from '../services/movies.service';
     TuiAppearance,
     TuiRating,
     FormsModule,
-    TuiChip,
-    CommonModule,
-  ],
+    TuiChip
+],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.less',
 })

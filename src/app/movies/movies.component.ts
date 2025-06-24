@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { TuiLoader } from '@taiga-ui/core';
 import { map, Observable } from 'rxjs';
@@ -13,10 +13,8 @@ import { MoviesService } from '../services/movies.service';
     AsyncPipe,
     TuiLoader,
     MovieCardComponent,
-    HeaderComponent,
-    NgForOf,
-    NgIf,
-  ],
+    HeaderComponent
+],
   templateUrl: './movies.component.html',
   styleUrl: './movies.component.less',
 })

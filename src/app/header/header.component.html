@@ -20,20 +20,22 @@
       <tui-input *tuiLet="movies$ | async as movies" [formControl]="search" tuiTextfieldIcon="@tui.search">
         Search
         <input (keypress)="onKeypressEvent($event)" placeholder="Search for a movie you want to add"
-               tuiTextfieldLegacy/>
-        <ng-container *ngIf="movies?.length && showDropdown">
+          tuiTextfieldLegacy/>
+        @if (movies?.length && showDropdown) {
           <tui-data-list *tuiDataList>
-            <button (click)="onSelected(movie[0])" *ngFor="let movie of movies" [value]="movie[0]" tuiOption>
-              <tui-avatar [round]="false" [src]="movie[2] | tuiFallbackSrc : (movie[1] | tuiInitials) | async"
-                          class="avatar"
-                          size="xxl"></tui-avatar>
-              <div class="movie-name-release-date">
-                <span class="tui-text_h4">{{ movie[0] }}</span>
-                <span class="tui-text_h5">{{ movie[1] }}</span>
-              </div>
-            </button>
+            @for (movie of movies; track movie) {
+              <button (click)="onSelected(movie[0])" [value]="movie[0]" tuiOption>
+                <tui-avatar [round]="false" [src]="movie[2] | tuiFallbackSrc : (movie[1] | tuiInitials) | async"
+                  class="avatar"
+                size="xxl"></tui-avatar>
+                <div class="movie-name-release-date">
+                  <span class="tui-text_h4">{{ movie[0] }}</span>
+                  <span class="tui-text_h5">{{ movie[1] }}</span>
+                </div>
+              </button>
+            }
           </tui-data-list>
-        </ng-container>
+        }
       </tui-input>
       <button (click)="logout()" appearance="destructive" iconStart="@tui.log-out" size="l" tuiButton>
         Logout

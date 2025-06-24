@@ -6,11 +6,11 @@
                   {{ imageBaseUrl }}w300{{ movie.poster }} 300w" />
       </a>
       @if (!movie.watched) {
-      <button appearance="primary" (click)="markMovieAsWatched()" iconStart="@tui.eye" size="m" tuiIconButton
-        [style.border-radius.%]="100"
-        style="position: absolute; top: 10px; left: 10px; border: none; padding: 10px; cursor: pointer; border-radius: 100%;">
-        Watched
-      </button>
+        <button appearance="primary" (click)="markMovieAsWatched()" iconStart="@tui.eye" size="m" tuiIconButton
+          [style.border-radius.%]="100"
+          style="position: absolute; top: 10px; left: 10px; border: none; padding: 10px; cursor: pointer; border-radius: 100%;">
+          Watched
+        </button>
       }
       <button (click)="showDeleteDialog(template)" [style.border-radius.%]="100" appearance="accent"
         iconStart="@tui.trash-2" size="m"
@@ -26,44 +26,44 @@
     </div>
 
     @if (movie.watchInfo !== null && !movie.watched) {
-    <footer>
-      @if (movie.watchInfo.rent) {
-        <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
-          Rent
-          <ng-container *ngFor="let provider of movie.watchInfo.rent">
-            <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
-          </ng-container>
-        </tui-chip>
-      }
-      @if (movie.watchInfo.flatrate) {
-        <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
-          Stream
-          <ng-container *ngFor="let provider of movie.watchInfo.flatrate">
-            <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
-          </ng-container>
-        </tui-chip>
-      }
-    </footer> }
+      <footer>
+        @if (movie.watchInfo.rent) {
+          <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
+            Rent
+            @for (provider of movie.watchInfo.rent; track provider) {
+              <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
+            }
+          </tui-chip>
+        }
+        @if (movie.watchInfo.flatrate) {
+          <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
+            Stream
+            @for (provider of movie.watchInfo.flatrate; track provider) {
+              <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
+            }
+          </tui-chip>
+        }
+      </footer> }
 
-    @if (movie.watched) {
-    <footer>
-      <label>
-        Rate Movie
-        <tui-rating class="rating" [(ngModel)]="rating" (ngModelChange)="onRatingChange($event)" />
-      </label>
-    </footer>
-    }
+      @if (movie.watched) {
+        <footer>
+          <label>
+            Rate Movie
+            <tui-rating class="rating" [(ngModel)]="rating" (ngModelChange)="onRatingChange($event)" />
+          </label>
+        </footer>
+      }
 
+    </div>
   </div>
-</div>
 
-<ng-template #template let-observer>
-  <p class="tui-text_h3">Delete Movie</p>
-  <p class="tui-text_h5">Do you want to remove movie?</p>
-  <button (click)="deleteMovie()" class="tui-space_right-3" size="m" tuiButton type="button">
-    Yes
-  </button>
-  <button (click)="observer.complete()" size="m" tuiButton type="button">
-    No
-  </button>
-</ng-template>
+  <ng-template #template let-observer>
+    <p class="tui-text_h3">Delete Movie</p>
+    <p class="tui-text_h5">Do you want to remove movie?</p>
+    <button (click)="deleteMovie()" class="tui-space_right-3" size="m" tuiButton type="button">
+      Yes
+    </button>
+    <button (click)="observer.complete()" size="m" tuiButton type="button">
+      No
+    </button>
+  </ng-template>

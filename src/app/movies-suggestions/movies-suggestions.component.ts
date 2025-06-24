@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import {
   TuiAlertService,
@@ -23,10 +23,8 @@ import { MoviesService } from '../services/movies.service';
     TuiTitle,
     TuiLoader,
     AsyncPipe,
-    NgForOf,
-    NgIf,
-    TuiButton,
-  ],
+    TuiButton
+],
   templateUrl: './movies-suggestions.component.html',
   styleUrl: './movies-suggestions.component.less',
 })

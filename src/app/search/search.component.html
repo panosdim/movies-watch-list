@@ -7,31 +7,36 @@
 </div>
 
 <div class="search-results">
-  <ng-container *ngIf="(searchResults$ | async) as results">
-    <div *ngFor="let movie of results" tuiAppearance="floating" tuiCardLarge>
-      <div class="movie-contents">
-        <img alt="{{ movie.title }}" class="tui-space_right-4" src="{{ imageBaseUrl }}{{ movie.poster_path }}"/>
-        <div class="tui-space_right-4">
-          <div class="tui-text_h4">{{ movie.title }}</div>
-          <div class="tui-text_h5">{{ movie.release_date }}</div>
-          <p class="tui-text_body-m">{{ movie.overview }}</p>
+  @if ((searchResults$ | async); as results) {
+    @for (movie of results; track movie) {
+      <div tuiAppearance="floating" tuiCardLarge>
+        <div class="movie-contents">
+          <img alt="{{ movie.title }}" class="tui-space_right-4" src="{{ imageBaseUrl }}{{ movie.poster_path }}"/>
+          <div class="tui-space_right-4">
+            <div class="tui-text_h4">{{ movie.title }}</div>
+            <div class="tui-text_h5">{{ movie.release_date }}</div>
+            <p class="tui-text_body-m">{{ movie.overview }}</p>
+          </div>
+          <label tuiProgressLabel>
+            <span class="text">Users score</span>
+            <span class="percent">{{ Math.round((movie.vote_average / 10) * 100) }}%</span>
+            <tui-progress-circle
+              [max]=10
+              [value]="movie.vote_average"
+              size="xl"
+              />
+          </label>
+          <button (click)="addMovieToWatchList(movie)" [disabled]="isMovieAlreadyInWatchList(movie.id)" tuiButton>
+            Add to watch list
+          </button>
         </div>
-        <label tuiProgressLabel>
-          <span class="text">Users score</span>
-          <span class="percent">{{ Math.round((movie.vote_average / 10) * 100) }}%</span>
-
-          <tui-progress-circle
-            [max]=10
-            [value]="movie.vote_average"
-            size="xl"
-          />
-        </label>
-        <button (click)="addMovieToWatchList(movie)" [disabled]="isMovieAlreadyInWatchList(movie.id)" tuiButton>
-          Add to watch list
-        </button>
       </div>
-    </div>
-    <tui-loader *ngIf="inSearch && !searchCompleted" size="xxl"></tui-loader>
-    <p *ngIf="inSearch && results.length === 0 && searchCompleted" class="tui-text_h1 center">Nothing found</p>
-  </ng-container>
+    }
+    @if (inSearch && !searchCompleted) {
+      <tui-loader size="xxl"></tui-loader>
+    }
+    @if (inSearch && results.length === 0 && searchCompleted) {
+      <p class="tui-text_h1 center">Nothing found</p>
+    }
+  }
 </div>

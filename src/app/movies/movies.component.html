@@ -5,11 +5,12 @@
     Watched ({{ (watched$ | async)?.length }})
   </p>
   <div class="section">
-    <ng-container *ngIf="(watched$ | async) as watched; else loading">
-      <app-movie-card (refetchWatchlist)="fetchMovies()" *ngFor="let movie of watched" [movie]="movie"></app-movie-card>
-    </ng-container>
-    <ng-template #loading>
+    @if ((watched$ | async); as watched) {
+      @for (movie of watched; track movie) {
+        <app-movie-card (refetchWatchlist)="fetchMovies()" [movie]="movie"></app-movie-card>
+      }
+    } @else {
       <tui-loader size="xxl"></tui-loader>
-    </ng-template>
+    }
   </div>
 </div>

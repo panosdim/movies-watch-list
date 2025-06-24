@@ -1,4 +1,4 @@
-import {AsyncPipe, CommonModule} from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Router, RouterLink, RouterLinkActive} from '@angular/router';

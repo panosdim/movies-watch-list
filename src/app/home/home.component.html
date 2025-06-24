@@ -7,11 +7,15 @@
     Watchlist ({{ (watchlist$ | async)?.length }})
   </p>
   <div class="section">
-    <ng-container *ngIf="watchlist$ | async as watchListMovies">
-      <app-movie-card *ngFor="let movie of watchListMovies" [movie]="movie">
-      </app-movie-card>
-    </ng-container>
-    <tui-loader *ngIf="(watchlist$ | async) === null" size="xxl"></tui-loader>
+    @if (watchlist$ | async; as watchListMovies) {
+      @for (movie of watchListMovies; track movie) {
+        <app-movie-card [movie]="movie">
+        </app-movie-card>
+      }
+    }
+    @if ((watchlist$ | async) === null) {
+      <tui-loader size="xxl"></tui-loader>
+    }
   </div>
   <p class="footer">
     <a href="https://www.themoviedb.org">
