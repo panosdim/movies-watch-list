@@ -1,19 +1,23 @@
 <div class="tui-container tui-container_fullwidth">
   <div class="tui-row tui-row_adaptive">
     <div class="tui-col_md-8 releases-section">
-      <ng-container *ngIf="(popularMovies$ | async) as movies; else loading">
-        <ul *ngIf="movies.length > 0; else blank">
-          <li *ngFor="let movie of movies">
-            <a href="https://www.themoviedb.org/movie/{{ movie.id }}" target="_blank" rel="noopener noreferrer">
-              <img src="{{ imageBaseUrl }}{{ movie.poster_path }}" alt="{{ movie.title }}" />
-            </a>
-          </li>
-        </ul>
-        <ng-template #blank class="tui-text_h1">Data is not available</ng-template>
-      </ng-container>
-      <ng-template #loading>
+      @if ((popularMovies$ | async); as movies) {
+        @if (movies.length > 0) {
+          <ul>
+            @for (movie of movies; track movie) {
+              <li>
+                <a href="https://www.themoviedb.org/movie/{{ movie.id }}" target="_blank" rel="noopener noreferrer">
+                  <img src="{{ imageBaseUrl }}{{ movie.poster_path }}" alt="{{ movie.title }}" />
+                </a>
+              </li>
+            }
+          </ul>
+        } @else {
+          Data is not available
+        }
+      } @else {
         <tui-loader size="xxl"></tui-loader>
-      </ng-template>
+      }
     </div>
     <div class="tui-col_xs-12 tui-col_md-4 login-section">
       <div class="tui-container">

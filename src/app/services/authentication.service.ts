@@ -24,10 +24,10 @@ export class AuthenticationService {
       .pipe(
         map((res: any) => {
           // login successful if there's a jwt token in the response
-          if (res && res.token) {
+          if (res && res.token && res.firstName && res.lastName) {
             // store user and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('token', res.token);
-            this.user = res.user;
+            this.user = new User(res.firstName, res.lastName);
           }
           return this.user;
         })

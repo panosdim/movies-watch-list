@@ -1,41 +1,41 @@
-import { CommonModule } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  TuiAlertService,
-  TuiAppearance,
-  TuiButton,
-  TuiLoader,
-} from '@taiga-ui/core';
-import { TuiCardLarge } from '@taiga-ui/layout';
-import { finalize, Observable, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { HeaderComponent } from '../header/header.component';
-import { MovieType } from '../models/movie';
-import { WatchListMovie } from '../models/watchlist';
-import { MoviesService } from '../services/movies.service';
-import { SearchService } from '../services/search.service';
+import {CommonModule} from '@angular/common';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {TuiAlertService, TuiAppearance, TuiButton, TuiLoader,} from '@taiga-ui/core';
+import {TuiCardLarge} from '@taiga-ui/layout';
+import {finalize, Observable, of, Subscription} from 'rxjs';
+import {environment} from 'src/environments/environment';
+import {HeaderComponent} from '../header/header.component';
+import {MovieType} from '../models/movie';
+import {WatchListMovie} from '../models/watchlist';
+import {MoviesService} from '../services/movies.service';
+import {SearchService} from '../services/search.service';
+import {TuiProgressCircle, TuiProgressLabel} from "@taiga-ui/kit";
 
 @Component({
-    selector: 'app-search',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.less'],
-    imports: [
-        CommonModule,
-        TuiCardLarge,
-        TuiButton,
-        TuiAppearance,
-        TuiLoader,
-        HeaderComponent,
-    ]
+  selector: 'app-search',
+  templateUrl: './search.component.html',
+  styleUrls: ['./search.component.less'],
+  imports: [
+    CommonModule,
+    TuiCardLarge,
+    TuiButton,
+    TuiAppearance,
+    TuiLoader,
+    HeaderComponent,
+    TuiProgressCircle,
+    TuiProgressLabel
+  ],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   searchResults$!: Observable<MovieType[]>;
   inSearch: boolean = false;
   searchCompleted: boolean = false;
   imageBaseUrl = environment.imageBaseUrl + 'w92';
-  watchList: WatchListMovie[] | undefined;
-  movies: WatchListMovie[] | undefined;
+  watchList: WatchListMovie[] = [];
+  movies: WatchListMovie[] = [];
+  protected readonly Math = Math;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private router: Router,
@@ -43,10 +43,12 @@ export class SearchComponent implements OnInit {
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.searchService.getSearchTerm().subscribe((term) => {
+    // Subscribe to search term changes
+    const searchSub = this.searchService.getSearchTerm().subscribe((term) => {
       if (term) {
         this.inSearch = true;
         this.searchCompleted = false;
@@ -55,17 +57,26 @@ export class SearchComponent implements OnInit {
           .pipe(finalize(() => (this.searchCompleted = true)));
       } else {
         this.inSearch = false;
-        this.searchResults$ = of([]);
+        this.searchResults$ = of([] as MovieType[]);
       }
     });
+    this.subscriptions.push(searchSub);
 
-    this.moviesService.getWatchlist().subscribe((res) => {
+    // Subscribe to watchlist changes
+    const watchlistSub = this.moviesService.getWatchlist().subscribe((res) => {
       this.watchList = res;
     });
+    this.subscriptions.push(watchlistSub);
 
-    this.moviesService.getMovies().subscribe((res) => {
+    // Subscribe to watched movies
+    const watchedSub = this.moviesService.getWatchedMovies().subscribe((res) => {
       this.movies = res;
     });
+    this.subscriptions.push(watchedSub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   backToHome() {
@@ -75,24 +86,25 @@ export class SearchComponent implements OnInit {
 
   isMovieAlreadyInWatchList(movieId: number): boolean {
     return (
-      this.watchList != undefined &&
-      this.watchList.some(
-        (movie: WatchListMovie) => movie.movie_id === movieId
-      ) &&
-      this.movies != undefined &&
-      this.movies.some((movie: WatchListMovie) => movie.movie_id === movieId)
+      this.watchList.some((movie: WatchListMovie) => movie.movieId === movieId) ||
+      this.movies.some((movie: WatchListMovie) => movie.movieId === movieId)
     );
   }
 
   addMovieToWatchList(movie: MovieType) {
-    this.moviesService.addToWatchList(movie).subscribe(() => {
-      this.alertService
-        .open(`Movie added to watch list`, {
-          label: movie.title,
-          appearance: 'success',
-        })
-        .subscribe();
-      this.backToHome();
+    this.moviesService.addToWatchList(movie).subscribe({
+      next: (_result) => {
+        this.alertService
+          .open(`Movie added to watch list`, {
+            label: movie.title,
+            appearance: 'success',
+          })
+          .subscribe();
+        this.backToHome();
+      },
+      error: (error) => {
+        console.error('Error adding movie:', error);
+      }
     });
   }
 }

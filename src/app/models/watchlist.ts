@@ -1,11 +1,12 @@
+import { WatchedInfo } from './watch.info';
+
 export type WatchListMovie = {
   id: number;
-  image: string | null;
-  movie_id: number;
-  release_date: string;
+  poster: string | null;
+  movieId: number;
   title: string | null;
-  name: string | null;
-  downloaded: boolean;
-  watched: boolean;
+  watched: boolean | null;
   rating: number;
+  userScore: number | null;
+  watchInfo: WatchedInfo | null;
 };

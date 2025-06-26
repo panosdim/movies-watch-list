@@ -1,117 +1,153 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { TuiAlertService } from '@taiga-ui/core';
-import { Observable, catchError, of, retry, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  Observable,
+  of,
+  retry,
+  tap,
+  timer,
+} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MovieType } from '../models/movie';
 import { WatchListMovie } from '../models/watchlist';
 
 @Injectable()
 export class MoviesService {
+  private watchlistSubject = new BehaviorSubject<WatchListMovie[]>([]);
+
   constructor(
     private http: HttpClient,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
-  ) {}
+  ) {
+    this.loadWatchlist();
+  }
 
   getWatchlist(): Observable<WatchListMovie[]> {
-    return this.http.get<WatchListMovie[]>(environment.watchlistUrl()).pipe(
-      catchError((_err) => {
-        this.alertService
-          .open(`Error occurred while retrieving movies watch list`, {
-            label: `Error in movies watch list`,
-            appearance: 'error',
-          })
-          .subscribe();
-        return of();
+    return this.watchlistSubject.asObservable();
+  }
+
+  addToWatchList(movie: any): Observable<any> {
+    return this.addToWatchListAPI(movie).pipe(
+      tap((result) => {
+        // Add the new movie to the current list immediately for instant feedback
+        const currentList = this.watchlistSubject.value;
+
+        // Create the new movie object in the format expected by the UI
+        const newMovie: WatchListMovie = {
+          id: result.id,
+          movieId: result.movieId,
+          title: result.title,
+          poster: result.poster,
+          watched: result.watched || false,
+          rating: result.rating || 0,
+          watchInfo: result.watchInfo || null,
+          userScore: result.userScore || null,
+        };
+
+        const updatedList = [...currentList, newMovie];
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from the server after a small delay to ensure consistency
+        timer(1000).subscribe(() => {
+          this.loadWatchlist();
+        });
       })
     );
   }
 
-  addToWatchList(movie: MovieType): Observable<WatchListMovie> {
+  deleteMovie(movie: WatchListMovie): Observable<any> {
+    return this.deleteMovieAPI(movie).pipe(
+      tap(() => {
+        // Remove the movie from current list immediately
+        const currentList = this.watchlistSubject.value;
+        const updatedList = currentList.filter((m) => m.id !== movie.id);
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from the server after a small delay
+        timer(500).subscribe(() => {
+          this.loadWatchlist();
+        });
+      })
+    );
+  }
+
+  markMovieAsWatched(movie: WatchListMovie): Observable<any> {
+    return this.markMovieAsWatchedAPI(movie).pipe(
+      tap(() => {
+        // Remove the movie from the watchlist immediately (since it's now watched)
+        const currentList = this.watchlistSubject.value;
+        const updatedList = currentList.filter((m) => m.id !== movie.id);
+        this.watchlistSubject.next(updatedList);
+
+        // Then refresh from the server after a small delay to ensure consistency
+        timer(500).subscribe(() => {
+          this.loadWatchlist();
+        });
+      })
+    );
+  }
+
+  addToWatchListAPI(movie: MovieType): Observable<WatchListMovie> {
     return this.http
-      .post<WatchListMovie>(environment.watchlistUrl(), {
+      .post<WatchListMovie>(environment.moviesUrl(), {
         title: movie.title,
-        movie_id: movie.id,
-        image: movie.poster_path,
+        movieId: movie.id,
+        poster: movie.poster_path,
       })
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error adding movie to watchlist:', err);
           this.alertService
             .open(`Error occurred while adding movie to watch list`, {
               label: `Error in adding`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
 
-  removeFromWatchList(movie: WatchListMovie): Observable<void> {
+  deleteMovieAPI(movie: WatchListMovie): Observable<void> {
     return this.http
-      .delete<void>(environment.watchlistUrl() + `/${movie.id}`)
+      .delete<void>(environment.moviesUrl() + `/${movie.id}`)
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error deleting movie:', err);
           this.alertService
-            .open(`Error occurred while removing movie from watch list`, {
+            .open(`Error occurred while removing movie`, {
               label: `Error in removing`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
 
-  updateReleaseDates(): Observable<void> {
-    return this.http.get<void>(environment.updateReleaseDatesUrl()).pipe(
-      catchError((_err) => {
-        this.alertService
-          .open(`Error occurred while updating release dates`, {
-            label: `Error in update release dates`,
-            appearance: 'error',
-          })
-          .subscribe();
-        return of();
-      })
-    );
-  }
-
-  markMovieAsDownloaded(movie: WatchListMovie): Observable<void> {
+  markMovieAsWatchedAPI(movie: WatchListMovie): Observable<void> {
     return this.http
-      .post<void>(environment.moviesUrl() + `/mark/downloaded/${movie.id}`, {})
+      .post<void>(environment.moviesUrl() + `/watched/${movie.id}`, {})
       .pipe(
-        catchError((_err) => {
+        catchError((err) => {
+          console.error('Error marking movie as watched:', err);
           this.alertService
-            .open(`Error occurred while mark movie as downloaded`, {
+            .open(`Error occurred while mark movie as watched`, {
               label: `Error in update movie`,
               appearance: 'error',
             })
             .subscribe();
-          return of();
+          throw err;
         })
       );
   }
 
-  markMovieAsWatched(movie: WatchListMovie): Observable<void> {
-    return this.http
-      .post<void>(environment.moviesUrl() + `/mark/watched/${movie.id}`, {})
-      .pipe(
-        catchError((_err) => {
-          this.alertService
-            .open(`Error occurred while mark movie as downloaded`, {
-              label: `Error in update movie`,
-              appearance: 'error',
-            })
-            .subscribe();
-          return of();
-        })
-      );
-  }
-
-  getMovies(): Observable<WatchListMovie[]> {
-    return this.http.get<WatchListMovie[]>(environment.moviesUrl()).pipe(
+  getWatchedMovies(): Observable<WatchListMovie[]> {
+    return this.http.get<WatchListMovie[]>(environment.watchedMoviesUrl()).pipe(
       catchError((_err) => {
         this.alertService
           .open(`Error occurred while retrieving movies list`, {
@@ -119,7 +155,7 @@ export class MoviesService {
             appearance: 'error',
           })
           .subscribe();
-        return of();
+        return of([]);
       })
     );
   }
@@ -145,7 +181,7 @@ export class MoviesService {
   getMoviesSuggestions(numMovies: number): Observable<MovieType[]> {
     return this.http
       .get<MovieType[]>(
-        environment.moviesUrl() + `/suggestion?numMovies=${numMovies}`
+        environment.suggestionUrl() + `?numOfMovies=${numMovies}`
       )
       .pipe(
         retry({
@@ -169,5 +205,25 @@ export class MoviesService {
           return of([]);
         })
       );
+  }
+
+  private loadWatchlist(): void {
+    this.http
+      .get<WatchListMovie[]>(environment.watchlistUrl())
+      .pipe(
+        catchError((err) => {
+          console.error('Error loading watchlist:', err);
+          this.alertService
+            .open(`Error occurred while retrieving movies watch list`, {
+              label: `Error in movies watch list`,
+              appearance: 'error',
+            })
+            .subscribe();
+          return of([]);
+        })
+      )
+      .subscribe((watchlist) => {
+        this.watchlistSubject.next(watchlist);
+      });
   }
 }

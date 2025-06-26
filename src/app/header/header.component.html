@@ -1,40 +1,43 @@
 <div class="tui-space_top-6 hide"></div>
-<div tuiCardLarge tuiAppearance="floating" textAlign="center" class="tui-space_horizontal-6">
-  <div tuiHeader class="header-contents">
+<div class="tui-space_horizontal-6" textAlign="center" tuiAppearance="floating" tuiCardLarge>
+  <div class="header-contents" tuiHeader>
     <div class="logo">
-      <img src="assets/icons/icon-72x72.png" />
+      <img src="assets/icons/icon-72x72.png"/>
       <p class="tui-text_h4">Movies Watch List</p>
     </div>
     <div class="toolbar">
-      <nav tuiTabBar style="min-width: 15rem;">
-        <a icon="@tui.home" routerLinkActive tuiTabBarItem [routerLink]="routePaths.home">
+      <nav style="min-width: 15rem;" tuiTabBar>
+        <a (click)="navigateToHome()" icon="@tui.home" routerLinkActive tuiTabBarItem>
           Home
         </a>
-        <a icon="@tui.clapperboard" routerLinkActive tuiTabBarItem [routerLink]="routePaths.movies">
+        <a (click)="navigateToMovies()" icon="@tui.clapperboard" routerLinkActive tuiTabBarItem>
           Watched Movies
         </a>
-        <a icon="@tui.search" routerLinkActive tuiTabBarItem [routerLink]="routePaths.search">
+        <a [routerLink]="routePaths.search" icon="@tui.search" routerLinkActive tuiTabBarItem>
           Search
         </a>
       </nav>
-      <tui-input *tuiLet="movies$ | async as movies" tuiTextfieldIcon="@tui.search" [formControl]="search">
+      <tui-input *tuiLet="movies$ | async as movies" [formControl]="search" tuiTextfieldIcon="@tui.search">
         Search
-        <input (keypress)="onKeypressEvent($event)" tuiTextfieldLegacy
-          placeholder="Search for a movie you want to add" />
-        <ng-container *ngIf="movies?.length && showDropdown">
+        <input (keypress)="onKeypressEvent($event)" placeholder="Search for a movie you want to add"
+          tuiTextfieldLegacy/>
+        @if (movies?.length && showDropdown) {
           <tui-data-list *tuiDataList>
-            <button *ngFor="let movie of movies" tuiOption [value]="movie[0]" (click)="onSelected(movie[0])">
-              <tui-avatar [src]="movie[2] | tuiFallbackSrc : (movie[1] | tuiInitials) | async" [round]="false" new
-                size="xxl" class="avatar"></tui-avatar>
-              <div class="movie-name-release-date">
-                <span class="tui-text_h4">{{ movie[0] }}</span>
-                <span class="tui-text_h5">{{ movie[1] }}</span>
-              </div>
-            </button>
+            @for (movie of movies; track movie) {
+              <button (click)="onSelected(movie[0])" [value]="movie[0]" tuiOption>
+                <tui-avatar [round]="false" [src]="movie[2] | tuiFallbackSrc : (movie[1] | tuiInitials) | async"
+                  class="avatar"
+                size="xxl"></tui-avatar>
+                <div class="movie-name-release-date">
+                  <span class="tui-text_h4">{{ movie[0] }}</span>
+                  <span class="tui-text_h5">{{ movie[1] }}</span>
+                </div>
+              </button>
+            }
           </tui-data-list>
-        </ng-container>
+        }
       </tui-input>
-      <button tuiButton size="l" appearance="destructive" iconStart="@tui.log-out" (click)="logout()">
+      <button (click)="logout()" appearance="destructive" iconStart="@tui.log-out" size="l" tuiButton>
         Logout
       </button>
     </div>

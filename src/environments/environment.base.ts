@@ -16,12 +16,15 @@ export const environmentBase = {
     return this.apiUrl + '/autocomplete';
   },
   watchlistUrl() {
-    return this.apiUrl + '/watchlist';
+    return this.apiUrl + '/movies/watchlist';
   },
   moviesUrl() {
     return this.apiUrl + '/movies';
   },
-  updateReleaseDatesUrl() {
-    return this.apiUrl + '/update';
+  watchedMoviesUrl() {
+    return this.apiUrl + '/movies/watched';
+  },
+  suggestionUrl() {
+    return this.apiUrl + '/suggestion';
   },
 };

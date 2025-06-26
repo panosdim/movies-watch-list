@@ -5,15 +5,6 @@
   height: 100%;
 }
 
-.image-container {
-  position: relative; /* Establishes a positioning context for the button */
-  display: inline-block; /* Ensure the container only takes up as much space as the image */
-
-  img {
-    display: block; /* Remove any unwanted space below the image */
-  }
-}
-
 .movie-card {
   display: flex;
   flex-direction: column;
@@ -36,10 +27,9 @@
 
   tui-chip {
     font: var(--tui-font-heading-5);
-  }
-
-  tui-icon {
-    cursor: pointer;
+    img {
+      border-radius: 0 0 0 0;
+    }
   }
 
   div {
@@ -52,6 +42,16 @@
 
   footer {
     text-align: center;
-    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 80%;
   }
+}
+
+.label-wrapper {
+  inline-size: 100%;
+  text-shadow: 0 0 0.25rem #000;
+  color: var(--tui-text-primary-on-accent-1);
 }

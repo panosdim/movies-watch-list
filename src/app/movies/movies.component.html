@@ -1,28 +1,16 @@
-<app-header> </app-header>
+<app-header></app-header>
 
 <div class="root">
-  <p class="section-title">
-    Downloaded ({{ (downloaded$ | async)?.length }})
-  </p>
-  <div class="section">
-    <ng-container *ngIf="(downloaded$ | async) as downloaded; else loading">
-      <app-movie-card *ngFor="let movie of downloaded" [movie]="movie"
-        (refetchWatchlist)="fetchMovies()"></app-movie-card>
-    </ng-container>
-    <ng-template #loading>
-      <tui-loader size="xxl"></tui-loader>
-    </ng-template>
-  </div>
-
   <p class="section-title">
     Watched ({{ (watched$ | async)?.length }})
   </p>
   <div class="section">
-    <ng-container *ngIf="(watched$ | async) as watched; else loading">
-      <app-movie-card *ngFor="let movie of watched" [movie]="movie" (refetchWatchlist)="fetchMovies()"></app-movie-card>
-    </ng-container>
-    <ng-template #loading>
+    @if ((watched$ | async); as watched) {
+      @for (movie of watched; track movie) {
+        <app-movie-card (refetchWatchlist)="fetchMovies()" [movie]="movie"></app-movie-card>
+      }
+    } @else {
       <tui-loader size="xxl"></tui-loader>
-    </ng-template>
+    }
   </div>
 </div>

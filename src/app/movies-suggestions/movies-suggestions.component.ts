@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import {
   TuiAlertService,
@@ -15,20 +15,18 @@ import { WatchListMovie } from '../models/watchlist';
 import { MoviesService } from '../services/movies.service';
 
 @Component({
-    selector: 'app-movies-suggestions',
-    imports: [
-        TuiCardLarge,
-        TuiHeader,
-        TuiAppearance,
-        TuiTitle,
-        TuiLoader,
-        AsyncPipe,
-        NgForOf,
-        NgIf,
-        TuiButton,
-    ],
-    templateUrl: './movies-suggestions.component.html',
-    styleUrl: './movies-suggestions.component.less'
+  selector: 'app-movies-suggestions',
+  imports: [
+    TuiCardLarge,
+    TuiHeader,
+    TuiAppearance,
+    TuiTitle,
+    TuiLoader,
+    AsyncPipe,
+    TuiButton
+],
+  templateUrl: './movies-suggestions.component.html',
+  styleUrl: './movies-suggestions.component.less',
 })
 export class MoviesSuggestionsComponent {
   @Output() refetchWatchlist = new EventEmitter();
@@ -37,15 +35,15 @@ export class MoviesSuggestionsComponent {
   watchList: WatchListMovie[] | undefined;
   movies: WatchListMovie[] | undefined;
 
-  ngOnInit(): void {
-    this.fetchData();
-  }
-
   constructor(
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService
   ) {}
+
+  ngOnInit(): void {
+    this.fetchData();
+  }
 
   fetchData() {
     this.moviesService.getMoviesSuggestions(20).subscribe((res) => {
@@ -64,7 +62,7 @@ export class MoviesSuggestionsComponent {
       this.watchList = res;
     });
 
-    this.moviesService.getMovies().subscribe((res) => {
+    this.moviesService.getWatchedMovies().subscribe((res) => {
       this.movies = res;
     });
   }
@@ -74,17 +72,17 @@ export class MoviesSuggestionsComponent {
     movieId: number,
     list: WatchListMovie[] | undefined
   ): boolean {
-    return list?.some((movie) => movie.movie_id === movieId) ?? false;
+    return list?.some((movie) => movie.movieId === movieId) ?? false;
   }
 
   isMovieAlreadyInWatchList(movieId: number): boolean {
     return (
       this.watchList != undefined &&
       this.watchList.some(
-        (movie: WatchListMovie) => movie.movie_id === movieId
+        (movie: WatchListMovie) => movie.movieId === movieId
       ) &&
       this.movies != undefined &&
-      this.movies.some((movie: WatchListMovie) => movie.movie_id === movieId)
+      this.movies.some((movie: WatchListMovie) => movie.movieId === movieId)
     );
   }
 
