@@ -1,69 +1,143 @@
 <div tuiAppearance="floating" tuiCardLarge>
   <div class="movie-card">
     <div>
-      <a href="https://www.themoviedb.org/movie/{{ movie.movieId }}" rel="noopener noreferrer" target="_blank">
-        <img alt="{{ movie.title }}" sizes="(max-width: 47.9625em) 185px, 300px" srcset="{{ imageBaseUrl }}w185{{ movie.poster }} 185w,
-                  {{ imageBaseUrl }}w300{{ movie.poster }} 300w" />
+      <a
+        href="https://www.themoviedb.org/movie/{{ movie.movieId }}"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <img
+          alt="{{ movie.title }}"
+          sizes="(max-width: 47.9625em) 185px, 300px"
+          srcset="{{ imageBaseUrl }}w185{{ movie.poster }} 185w,
+                  {{ imageBaseUrl }}w300{{ movie.poster }} 300w"
+        />
       </a>
       @if (!movie.watched) {
-        <button appearance="primary" (click)="markMovieAsWatched()" iconStart="@tui.eye" size="m" tuiIconButton
-          [style.border-radius.%]="100"
-          style="position: absolute; top: 10px; left: 10px; border: none; padding: 10px; cursor: pointer; border-radius: 100%;">
-          Watched
-        </button>
+      <button
+        appearance="primary"
+        (click)="markMovieAsWatched()"
+        iconStart="@tui.eye"
+        size="m"
+        tuiIconButton
+        style="
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 100%;
+        "
+      >
+        Watched
+      </button>
       }
-      <button (click)="showDeleteDialog(template)" [style.border-radius.%]="100" appearance="accent"
-        iconStart="@tui.trash-2" size="m"
-        style="position: absolute; top: 10px; right: 10px; border: none; padding: 10px; cursor: pointer; border-radius: 100%;"
-        tuiIconButton>
+      <button
+        (click)="showDeleteDialog(template)"
+        appearance="accent"
+        iconStart="@tui.trash-2"
+        size="m"
+        style="
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 100%;
+        "
+        tuiIconButton
+      >
         Delete
       </button>
     </div>
+
     <div>
       <p class="tui-text_h5">
         {{ movie.title }}
       </p>
     </div>
 
-    @if (movie.watchInfo !== null && !movie.watched) {
-      <footer>
-        @if (movie.watchInfo.rent) {
-          <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
-            Rent
-            @for (provider of movie.watchInfo.rent; track provider) {
-              <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
-            }
-          </tui-chip>
+    <footer>
+      @if (movie.watchInfo !== null && !movie.watched) { @if
+      (movie.watchInfo.rent) {
+      <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
+        Rent @for (provider of movie.watchInfo.rent; track provider) {
+        <img
+          [src]="imageBaseUrl + 'w45/' + provider.logoPath"
+          alt="Provider Logo"
+        />
         }
-        @if (movie.watchInfo.flatrate) {
-          <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
-            Stream
-            @for (provider of movie.watchInfo.flatrate; track provider) {
-              <img [src]="imageBaseUrl + 'w45/' + provider.logoPath" alt="Provider Logo" />
-            }
-          </tui-chip>
+      </tui-chip>
+      } @if (movie.watchInfo.flatrate) {
+      <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
+        Stream @for (provider of movie.watchInfo.flatrate; track provider) {
+        <img
+          [src]="imageBaseUrl + 'w45/' + provider.logoPath"
+          alt="Provider Logo"
+        />
         }
-      </footer> }
-
-      @if (movie.watched) {
-        <footer>
-          <label>
-            Rate Movie
-            <tui-rating class="rating" [(ngModel)]="rating" (ngModelChange)="onRatingChange($event)" />
-          </label>
-        </footer>
-      }
-
-    </div>
+      </tui-chip>
+      } } @if (movie.watched) {
+      <label>
+        Rate Movie
+        <tui-rating
+          class="rating"
+          [(ngModel)]="rating"
+          (ngModelChange)="onRatingChange($event)"
+        />
+      </label>
+      } @else { @if (movie.userScore != null) { @if (movie.userScore >= 6.5) {
+      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+        <progress
+          size="l"
+          tuiProgressBar
+          [max]="10"
+          [value]="movie.userScore"
+          color="green"
+        ></progress>
+      </label>
+      }@else if (movie.userScore < 6.5 && movie.userScore>= 5) {
+      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+        <progress
+          size="l"
+          tuiProgressBar
+          [max]="10"
+          [value]="movie.userScore"
+        ></progress>
+      </label>
+      } @else {
+      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+        <progress
+          size="l"
+          tuiProgressBar
+          [max]="10"
+          [value]="movie.userScore"
+          color="red"
+        ></progress>
+      </label>
+      } } }
+    </footer>
   </div>
+</div>
 
-  <ng-template #template let-observer>
-    <p class="tui-text_h3">Delete Movie</p>
-    <p class="tui-text_h5">Do you want to remove movie?</p>
-    <button (click)="deleteMovie()" class="tui-space_right-3" size="m" tuiButton type="button">
-      Yes
-    </button>
-    <button (click)="observer.complete()" size="m" tuiButton type="button">
-      No
-    </button>
-  </ng-template>
+<ng-template #template let-observer>
+  <p class="tui-text_h3">Delete Movie</p>
+  <p class="tui-text_h5">Do you want to remove movie?</p>
+  <button
+    (click)="deleteMovie()"
+    class="tui-space_right-3"
+    size="m"
+    tuiButton
+    type="button"
+  >
+    Yes
+  </button>
+  <button (click)="observer.complete()" size="m" tuiButton type="button">
+    No
+  </button>
+</ng-template>

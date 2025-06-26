@@ -7,5 +7,6 @@ export type WatchListMovie = {
   title: string | null;
   watched: boolean | null;
   rating: number;
+  userScore: number | null;
   watchInfo: WatchedInfo | null;
 };

@@ -1,4 +1,3 @@
-
 import {
   Component,
   EventEmitter,
@@ -15,7 +14,12 @@ import {
   TuiDialogContext,
   TuiDialogService,
 } from '@taiga-ui/core';
-import { TuiChip, TuiRating } from '@taiga-ui/kit';
+import {
+  TuiChip,
+  TuiProgressBar,
+  TuiProgressLabel,
+  TuiRating,
+} from '@taiga-ui/kit';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { PolymorpheusContent } from '@taiga-ui/polymorpheus';
 import { Subscription } from 'rxjs';
@@ -31,8 +35,10 @@ import { MoviesService } from '../services/movies.service';
     TuiAppearance,
     TuiRating,
     FormsModule,
-    TuiChip
-],
+    TuiChip,
+    TuiProgressLabel,
+    TuiProgressBar,
+  ],
   templateUrl: './movie-card.component.html',
   styleUrl: './movie-card.component.less',
 })
@@ -42,6 +48,7 @@ export class MovieCardComponent implements OnInit {
   imageBaseUrl = environment.imageBaseUrl;
   deleteDialog!: Subscription;
   protected rating!: number;
+  protected readonly Math = Math;
 
   constructor(
     private moviesService: MoviesService,
@@ -63,6 +70,7 @@ export class MovieCardComponent implements OnInit {
         })
         .subscribe();
 
+      // Emit refetch after the service has completed its operations
       this.refetchWatchlist.emit();
     });
   }

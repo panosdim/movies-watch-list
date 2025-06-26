@@ -45,6 +45,7 @@ export class MoviesService {
           watched: result.watched || false,
           rating: result.rating || 0,
           watchInfo: result.watchInfo || null,
+          userScore: result.userScore || null,
         };
 
         const updatedList = [...currentList, newMovie];
@@ -77,14 +78,12 @@ export class MoviesService {
   markMovieAsWatched(movie: WatchListMovie): Observable<any> {
     return this.markMovieAsWatchedAPI(movie).pipe(
       tap(() => {
-        // Update the movie in the current list immediately
+        // Remove the movie from the watchlist immediately (since it's now watched)
         const currentList = this.watchlistSubject.value;
-        const updatedList = currentList.map((m) =>
-          m.id === movie.id ? { ...m, watched: true } : m
-        );
+        const updatedList = currentList.filter((m) => m.id !== movie.id);
         this.watchlistSubject.next(updatedList);
 
-        // Then refresh from the server after a small delay
+        // Then refresh from the server after a small delay to ensure consistency
         timer(500).subscribe(() => {
           this.loadWatchlist();
         });
