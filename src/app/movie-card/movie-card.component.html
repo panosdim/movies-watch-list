@@ -14,24 +14,24 @@
         />
       </a>
       @if (!movie.watched) {
-      <button
-        appearance="primary"
-        (click)="markMovieAsWatched()"
-        iconStart="@tui.eye"
-        size="m"
-        tuiIconButton
-        style="
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          border: none;
-          padding: 10px;
-          cursor: pointer;
-          border-radius: 100%;
-        "
-      >
-        Watched
-      </button>
+        <button
+          appearance="primary"
+          (click)="markMovieAsWatched()"
+          iconStart="@tui.eye"
+          size="m"
+          tuiIconButton
+          style="
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 100%;
+          "
+        >
+          Watched
+        </button>
       }
       <button
         (click)="showDeleteDialog(template)"
@@ -60,67 +60,77 @@
     </div>
 
     <footer>
-      @if (movie.watchInfo !== null && !movie.watched) { @if
-      (movie.watchInfo.rent) {
-      <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
-        Rent @for (provider of movie.watchInfo.rent; track provider) {
-        <img
-          [src]="imageBaseUrl + 'w45/' + provider.logoPath"
-          alt="Provider Logo"
-        />
-        }
-      </tui-chip>
-      } @if (movie.watchInfo.flatrate) {
-      <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
-        Stream @for (provider of movie.watchInfo.flatrate; track provider) {
-        <img
-          [src]="imageBaseUrl + 'w45/' + provider.logoPath"
-          alt="Provider Logo"
-        />
-        }
-      </tui-chip>
-      } } @if (movie.watched) {
-      <label>
-        Rate Movie
-        <tui-rating
-          class="rating"
-          [(ngModel)]="rating"
-          (ngModelChange)="onRatingChange($event)"
-        />
-      </label>
-      } @else { @if (movie.userScore != null) { @if (movie.userScore >= 6.5) {
-      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
-        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
-        <progress
-          size="l"
-          tuiProgressBar
-          [max]="10"
-          [value]="movie.userScore"
-          color="green"
-        ></progress>
-      </label>
-      }@else if (movie.userScore < 6.5 && movie.userScore>= 5) {
-      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
-        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
-        <progress
-          size="l"
-          tuiProgressBar
-          [max]="10"
-          [value]="movie.userScore"
-        ></progress>
-      </label>
+      @if (movie.watched) {
+        <label>
+          Rate Movie
+          <tui-rating
+            class="rating"
+            [(ngModel)]="rating"
+            (ngModelChange)="onRatingChange($event)"
+          />
+        </label>
       } @else {
-      <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
-        Users score {{ Math.round((movie.userScore / 10) * 100) }}%
-        <progress
-          size="l"
-          tuiProgressBar
-          [max]="10"
-          [value]="movie.userScore"
-          color="red"
-        ></progress>
-      </label>
-      } } }
+        @if (movie.watchInfo) {
+          @if (movie.watchInfo.rent) {
+            <tui-chip class="tui-space_bottom-4" size="m" appearance="primary">
+              Rent
+              @for (provider of movie.watchInfo.rent; track provider) {
+                <img
+                  [src]="imageBaseUrl + 'w45/' + provider.logoPath"
+                  alt="Provider Logo"
+                />
+              }
+            </tui-chip>
+          }
+          @if (movie.watchInfo.flatrate) {
+            <tui-chip class="tui-space_bottom-4" size="m" appearance="positive">
+              Stream
+              @for (provider of movie.watchInfo.flatrate; track provider) {
+                <img
+                  [src]="imageBaseUrl + 'w45/' + provider.logoPath"
+                  alt="Provider Logo"
+                />
+              }
+            </tui-chip>
+          }
+        }
+
+        @if (movie.userScore != null && movie.userScore !== 0) {
+          @if (movie.userScore >= 6.5) {
+            <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+              Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+              <progress
+                size="l"
+                tuiProgressBar
+                [max]="10"
+                [value]="movie.userScore"
+                color="green"
+              ></progress>
+            </label>
+          } @else if (movie.userScore >= 5) {
+            <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+              Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+              <progress
+                size="l"
+                tuiProgressBar
+                [max]="10"
+                [value]="movie.userScore"
+              ></progress>
+            </label>
+          } @else {
+            <label style="margin: 10px" tuiProgressLabel class="label-wrapper">
+              Users score {{ Math.round((movie.userScore / 10) * 100) }}%
+              <progress
+                size="l"
+                tuiProgressBar
+                [max]="10"
+                [value]="movie.userScore"
+                color="red"
+              ></progress>
+            </label>
+          }
+        }
+      }
     </footer>
   </div>
 </div>

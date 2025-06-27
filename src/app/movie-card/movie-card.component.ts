@@ -54,7 +54,7 @@ export class MovieCardComponent implements OnInit {
     private moviesService: MoviesService,
     @Inject(TuiAlertService)
     private readonly alertService: TuiAlertService,
-    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService
+    @Inject(TuiDialogService) private readonly dialogService: TuiDialogService,
   ) {}
 
   ngOnInit() {
